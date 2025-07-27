@@ -173,12 +173,12 @@ const Settings = () => {
           <h1 className="text-3xl font-bold text-foreground mb-6">Settings</h1>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-5 mb-6">
-              <TabsTrigger value="profile">Profile</TabsTrigger>
-              <TabsTrigger value="settings">Settings & Privacy</TabsTrigger>
-              <TabsTrigger value="transactions">Transactions</TabsTrigger>
-              <TabsTrigger value="account">Account</TabsTrigger>
-              <TabsTrigger value="help">Help</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mb-6 h-auto p-2">
+              <TabsTrigger value="profile" className="text-sm px-3 py-2">Profile</TabsTrigger>
+              <TabsTrigger value="settings" className="text-sm px-3 py-2">Settings & Privacy</TabsTrigger>
+              <TabsTrigger value="transactions" className="text-sm px-3 py-2">Transactions</TabsTrigger>
+              <TabsTrigger value="account" className="text-sm px-3 py-2">Account</TabsTrigger>
+              <TabsTrigger value="help" className="text-sm px-3 py-2">Help</TabsTrigger>
             </TabsList>
 
             {/* Profile Settings */}
