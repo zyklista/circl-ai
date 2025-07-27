@@ -24,22 +24,35 @@ const samplePosts = [
   }
 ];
 
-const hotPicks = [
-  {
+const featuredGroups = {
+  mostActive: {
     id: 1,
-    title: "Community Meetup",
-    description: "Join us for networking",
-    type: "event",
-    gradient: "from-purple-500 to-blue-500"
+    name: "Creative Minds",
+    description: "125 members • 45 active today",
+    members: 125,
+    activeToday: 45,
+    gradient: "from-purple-500 to-blue-500",
+    badge: "🔥 Most Active"
   },
-  {
-    id: 2,
-    title: "Artisan Crafts",
-    description: "Handmade pottery collection",
-    type: "marketplace",
-    gradient: "from-orange-500 to-red-500"
-  }
-];
+  recommended: [
+    {
+      id: 2,
+      name: "Tech Innovators",
+      description: "Latest tech trends and discussions",
+      members: 256,
+      gradient: "from-orange-500 to-red-500",
+      badge: "Recommended"
+    },
+    {
+      id: 3,
+      name: "Local Entrepreneurs",
+      description: "Business networking in your area",
+      members: 89,
+      gradient: "from-green-500 to-teal-500",
+      badge: "For You"
+    }
+  ]
+};
 
 const marketplaceItems = {
   hotSelling: [
@@ -153,16 +166,50 @@ const Index = () => {
             </Button>
           </div>
 
-          {/* Hot Picks Section */}
+          {/* Featured Groups Section */}
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">Hot Picks</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {hotPicks.map((item) => (
-                <Card key={item.id} className="shadow-lg hover:shadow-xl transition-all">
+            <h2 className="text-2xl font-bold text-foreground">FEATURED</h2>
+            
+            {/* Most Active Group */}
+            <Card className="shadow-lg hover:shadow-xl transition-all">
+              <CardContent className="p-0">
+                <div className={`h-28 bg-gradient-to-br ${featuredGroups.mostActive.gradient} text-white p-4 rounded-t-lg flex flex-col justify-center relative`}>
+                  <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
+                    {featuredGroups.mostActive.badge}
+                  </Badge>
+                  <h3 className="font-bold text-xl">{featuredGroups.mostActive.name}</h3>
+                  <p className="text-sm opacity-90">{featuredGroups.mostActive.description}</p>
+                </div>
+                <div className="p-4 flex justify-between items-center">
+                  <div className="text-sm text-muted-foreground">
+                    {featuredGroups.mostActive.members} members • {featuredGroups.mostActive.activeToday} active today
+                  </div>
+                  <Button size="sm" className="bg-gradient-primary text-white">
+                    Join
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recommended Groups */}
+            <div className="grid grid-cols-1 gap-4">
+              {featuredGroups.recommended.map((group) => (
+                <Card key={group.id} className="shadow-lg hover:shadow-xl transition-all">
                   <CardContent className="p-0">
-                    <div className={`h-24 bg-gradient-to-br ${item.gradient} text-white p-4 rounded-t-lg flex flex-col justify-center`}>
-                      <h3 className="font-bold text-lg">{item.title}</h3>
-                      <p className="text-sm opacity-90">{item.description}</p>
+                    <div className={`h-20 bg-gradient-to-br ${group.gradient} text-white p-4 rounded-t-lg flex flex-col justify-center relative`}>
+                      <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
+                        {group.badge}
+                      </Badge>
+                      <h3 className="font-bold text-lg">{group.name}</h3>
+                      <p className="text-sm opacity-90">{group.description}</p>
+                    </div>
+                    <div className="p-4 flex justify-between items-center">
+                      <div className="text-sm text-muted-foreground">
+                        {group.members} members
+                      </div>
+                      <Button size="sm" variant="outline">
+                        Join
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
