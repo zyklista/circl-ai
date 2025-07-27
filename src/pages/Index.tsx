@@ -49,6 +49,10 @@ const samplePosts = [
 const Index = () => {
   return (
     <Layout title="Community Feed">
+      <div 
+        className="min-h-screen p-6"
+        style={{ background: 'var(--home-bg)' }}
+      >
       <div className="max-w-2xl mx-auto">
         <CreatePost />
         
@@ -57,6 +61,7 @@ const Index = () => {
             <PostCard key={post.id} post={post} />
           ))}
         </div>
+      </div>
       </div>
     </Layout>
   );

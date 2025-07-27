@@ -41,6 +41,12 @@
     --community-hover: 240 6% 95%;
     --community-active: 268 86% 97%;
     
+    /* Page-specific backgrounds */
+    --home-bg: linear-gradient(135deg, hsl(55 100% 85%), hsl(200 80% 70%), hsl(120 60% 60%));
+    --groups-bg: linear-gradient(135deg, hsl(35 85% 80%), hsl(50 90% 85%));
+    --events-bg: linear-gradient(135deg, hsl(200 70% 80%), hsl(55 80% 85%));
+    --marketplace-bg: linear-gradient(135deg, hsl(90 60% 75%), hsl(60 85% 80%));
+    
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(262 78% 58%), hsl(268 86% 72%));
     --gradient-secondary: linear-gradient(135deg, hsl(240 6% 98%), hsl(245 10% 95%));

@@ -25,10 +25,10 @@ import {
 
 const mainItems = [
   { title: "Home", url: "/", icon: Home },
-  { title: "Communities", url: "/communities", icon: Users },
-  { title: "Messages", url: "/messages", icon: MessageSquare },
-  { title: "Trending", url: "/trending", icon: TrendingUp },
+  { title: "Groups", url: "/groups", icon: Users },
   { title: "Events", url: "/events", icon: Calendar },
+  { title: "Marketplace", url: "/marketplace", icon: TrendingUp },
+  { title: "Messages", url: "/messages", icon: MessageSquare },
 ];
 
 const communityItems = [
