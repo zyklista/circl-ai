@@ -101,7 +101,7 @@ export default function Auth() {
               <Users className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold">Welcome to Community</h1>
+          <h1 className="text-2xl font-bold">Welcome to Circl</h1>
           <p className="text-muted-foreground">Connect, share, and grow together</p>
         </div>
 
@@ -170,7 +170,7 @@ export default function Auth() {
                     {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button type="submit" className="w-full bg-gradient-to-r from-green-300 via-red-300 to-blue-300 text-foreground hover:from-green-400 hover:via-red-400 hover:to-blue-400" disabled={isLoading}>
                     {isLoading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
@@ -228,7 +228,7 @@ export default function Auth() {
                     {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
+                  <Button type="submit" className="w-full bg-gradient-to-r from-green-300 via-red-300 to-blue-300 text-foreground hover:from-green-400 hover:via-red-400 hover:to-blue-400" disabled={isLoading}>
                     {isLoading ? 'Creating account...' : 'Create Account'}
                   </Button>
                 </form>
