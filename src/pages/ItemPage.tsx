@@ -170,7 +170,10 @@ const ItemPage = () => {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <Button className="flex-1 bg-gradient-to-br from-green-400 to-emerald-500 text-white">
+                <Button 
+                  className="flex-1 bg-gradient-to-br from-green-400 to-emerald-500 text-white"
+                  onClick={() => navigate(`/marketplace/checkout/${item.id}?from=item`)}
+                >
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Buy Now
                 </Button>

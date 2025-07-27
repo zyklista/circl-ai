@@ -127,7 +127,7 @@ const Marketplace = () => {
                         className="bg-gradient-to-br from-green-400 to-emerald-500 text-white"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate(`/marketplace/item/${item.id}`);
+                          navigate(`/marketplace/checkout/${item.id}?from=marketplace`);
                         }}
                       >
                         <ShoppingCart className="w-4 h-4 mr-1" />
