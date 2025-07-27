@@ -3,7 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import Groups from "./pages/Groups";
 import GroupPage from "./pages/GroupPage";
 import PostPage from "./pages/PostPage";
@@ -40,44 +43,47 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/groups" element={<Groups />} />
-          <Route path="/groups/:id" element={<GroupPage />} />
-          <Route path="/groups/:id/edit" element={<EditGroup />} />
-          <Route path="/groups/:id/manage-members" element={<ManageMembers />} />
-          <Route path="/groups/:id/members" element={<GroupMembers />} />
-          <Route path="/groups/:id/share" element={<ShareGroup />} />
-          <Route path="/groups/:id/assign-admin" element={<AssignAdmin />} />
-          <Route path="/groups/:id/leave" element={<LeaveGroup />} />
-          <Route path="/groups/:id/delete" element={<DeleteGroup />} />
-          <Route path="/groups/:groupId/posts/:postId" element={<PostPage />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/events/create" element={<CreateEvent />} />
-          <Route path="/events/:id" element={<EventPage />} />
-          <Route path="/events/:id/edit" element={<EditEvent />} />
-          <Route path="/events/:id/share" element={<ShareEvent />} />
-          <Route path="/events/:id/join" element={<JoinEvent />} />
-          <Route path="/events/:id/cancel" element={<CancelEvent />} />
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/marketplace/item/:id" element={<ItemPage />} />
-          <Route path="/marketplace/checkout/:id" element={<Checkout />} />
-          <Route path="/transactions/:id" element={<Transactions />} />
-          <Route path="/marketplace/sell" element={<SellItem />} />
-          <Route path="/marketplace/share/:id" element={<ShareItem />} />
-          <Route path="/marketplace/message/:sellerId" element={<SellerInbox />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/membership" element={<Membership />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+            <Route path="/groups" element={<ProtectedRoute><Groups /></ProtectedRoute>} />
+            <Route path="/groups/:id" element={<ProtectedRoute><GroupPage /></ProtectedRoute>} />
+            <Route path="/groups/:id/edit" element={<ProtectedRoute><EditGroup /></ProtectedRoute>} />
+            <Route path="/groups/:id/manage-members" element={<ProtectedRoute><ManageMembers /></ProtectedRoute>} />
+            <Route path="/groups/:id/members" element={<ProtectedRoute><GroupMembers /></ProtectedRoute>} />
+            <Route path="/groups/:id/share" element={<ProtectedRoute><ShareGroup /></ProtectedRoute>} />
+            <Route path="/groups/:id/assign-admin" element={<ProtectedRoute><AssignAdmin /></ProtectedRoute>} />
+            <Route path="/groups/:id/leave" element={<ProtectedRoute><LeaveGroup /></ProtectedRoute>} />
+            <Route path="/groups/:id/delete" element={<ProtectedRoute><DeleteGroup /></ProtectedRoute>} />
+            <Route path="/groups/:groupId/posts/:postId" element={<ProtectedRoute><PostPage /></ProtectedRoute>} />
+            <Route path="/events" element={<ProtectedRoute><Events /></ProtectedRoute>} />
+            <Route path="/events/create" element={<ProtectedRoute><CreateEvent /></ProtectedRoute>} />
+            <Route path="/events/:id" element={<ProtectedRoute><EventPage /></ProtectedRoute>} />
+            <Route path="/events/:id/edit" element={<ProtectedRoute><EditEvent /></ProtectedRoute>} />
+            <Route path="/events/:id/share" element={<ProtectedRoute><ShareEvent /></ProtectedRoute>} />
+            <Route path="/events/:id/join" element={<ProtectedRoute><JoinEvent /></ProtectedRoute>} />
+            <Route path="/events/:id/cancel" element={<ProtectedRoute><CancelEvent /></ProtectedRoute>} />
+            <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
+            <Route path="/marketplace/item/:id" element={<ProtectedRoute><ItemPage /></ProtectedRoute>} />
+            <Route path="/marketplace/checkout/:id" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+            <Route path="/transactions/:id" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+            <Route path="/marketplace/sell" element={<ProtectedRoute><SellItem /></ProtectedRoute>} />
+            <Route path="/marketplace/share/:id" element={<ProtectedRoute><ShareItem /></ProtectedRoute>} />
+            <Route path="/marketplace/message/:sellerId" element={<ProtectedRoute><SellerInbox /></ProtectedRoute>} />
+            <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
+            <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+            <Route path="/membership" element={<ProtectedRoute><Membership /></ProtectedRoute>} />
+            <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

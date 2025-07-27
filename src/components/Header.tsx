@@ -1,12 +1,15 @@
-import { Menu, MessageCircle, Bell } from "lucide-react";
+import { Menu, MessageCircle, Bell, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   title?: string;
 }
 
 export function Header({ title }: HeaderProps) {
+  const { signOut } = useAuth();
+
   return (
     <header className="sticky top-0 z-40 bg-community-surface/95 backdrop-blur-sm border-b border-border shadow-soft">
       <div className="flex items-center justify-between px-4 py-3">
@@ -23,6 +26,15 @@ export function Header({ title }: HeaderProps) {
           </Button>
           <Button variant="ghost" size="icon" className="text-primary hover:bg-community-hover transition-smooth">
             <MessageCircle className="w-5 h-5" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={signOut}
+            className="text-primary hover:bg-community-hover transition-smooth"
+            title="Sign out"
+          >
+            <LogOut className="w-5 h-5" />
           </Button>
         </div>
       </div>
