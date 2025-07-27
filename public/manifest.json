@@ -1,0 +1,20 @@
+{
+  "name": "Circl AI",
+  "short_name": "Circl AI",
+  "description": "Community platform for modern collaboration",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["social", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}
