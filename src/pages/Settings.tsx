@@ -37,7 +37,15 @@ import {
   MapPin,
   Link as LinkIcon,
   Save,
-  X
+  X,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Settings as SettingsIcon,
+  Receipt,
+  History,
+  Banknote,
+  Wallet
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -56,7 +64,39 @@ const Settings = () => {
     bio: "Creative professional passionate about design and community building.",
     location: "San Francisco, CA",
     website: "https://janesmith.design",
-    birthday: "1990-05-15"
+    birthday: "1990-05-15",
+    verificationStatus: "pending" // pending, verified, rejected
+  });
+
+  // Transaction state
+  const [transactions, setTransactions] = useState({
+    current: [
+      { id: 1, type: "sale", item: "Vintage Camera", amount: 245.00, status: "pending", date: "2024-01-20", buyer: "Alex Johnson" },
+      { id: 2, type: "purchase", item: "Design Book", amount: 32.50, status: "processing", date: "2024-01-19", seller: "Book Store" }
+    ],
+    history: [
+      { id: 3, type: "sale", item: "Art Print", amount: 85.00, status: "completed", date: "2024-01-15", buyer: "Sarah Wilson" },
+      { id: 4, type: "purchase", item: "Laptop Stand", amount: 45.00, status: "completed", date: "2024-01-10", seller: "Tech Store" }
+    ]
+  });
+
+  // Bank information for sellers
+  const [bankInfo, setBankInfo] = useState({
+    accountHolder: "Jane Smith",
+    bankName: "Chase Bank",
+    accountNumber: "****1234",
+    routingNumber: "****5678",
+    verified: true
+  });
+
+  // Payment options for buyers
+  const [paymentOptions, setPaymentOptions] = useState({
+    cards: [
+      { id: 1, type: "Visa", last4: "1234", expiry: "12/26", isDefault: true },
+      { id: 2, type: "Mastercard", last4: "5678", expiry: "08/25", isDefault: false }
+    ],
+    paypal: { connected: true, email: "jane@example.com" },
+    applePay: { enabled: true }
   });
 
   // Notification settings
@@ -127,17 +167,16 @@ const Settings = () => {
     <Layout title="Settings">
       <div 
         className="min-h-screen p-6"
-        style={{ background: 'var(--community-bg)' }}
+        style={{ background: 'var(--settings-bg)' }}
       >
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold text-foreground mb-6">Settings</h1>
 
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-6 mb-6">
+            <TabsList className="grid w-full grid-cols-5 mb-6">
               <TabsTrigger value="profile">Profile</TabsTrigger>
-              <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="privacy">Privacy</TabsTrigger>
-              <TabsTrigger value="preferences">Preferences</TabsTrigger>
+              <TabsTrigger value="settings">Settings & Privacy</TabsTrigger>
+              <TabsTrigger value="transactions">Transactions</TabsTrigger>
               <TabsTrigger value="account">Account</TabsTrigger>
               <TabsTrigger value="help">Help</TabsTrigger>
             </TabsList>
@@ -249,6 +288,39 @@ const Settings = () => {
                         />
                       </div>
 
+                      <div>
+                        <label className="text-sm font-medium text-foreground mb-2 block">
+                          Verification Status <span className="text-red-500">*</span>
+                        </label>
+                        <div className="flex items-center gap-2">
+                          {profile.verificationStatus === "verified" && (
+                            <>
+                              <CheckCircle className="w-5 h-5 text-green-500" />
+                              <Badge variant="secondary" className="bg-green-100 text-green-700">Verified</Badge>
+                            </>
+                          )}
+                          {profile.verificationStatus === "pending" && (
+                            <>
+                              <Clock className="w-5 h-5 text-yellow-500" />
+                              <Badge variant="secondary" className="bg-yellow-100 text-yellow-700">Pending</Badge>
+                              <Button size="sm" variant="outline" className="ml-2">
+                                Upload Documents
+                              </Button>
+                            </>
+                          )}
+                          {profile.verificationStatus === "rejected" && (
+                            <>
+                              <XCircle className="w-5 h-5 text-red-500" />
+                              <Badge variant="secondary" className="bg-red-100 text-red-700">Rejected</Badge>
+                              <Button size="sm" variant="outline" className="ml-2">
+                                Resubmit
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">Verification is required to access all features</p>
+                      </div>
+
                       {isEditing && (
                         <div className="flex justify-end gap-2">
                           <Button variant="outline" onClick={() => setIsEditing(false)}>
@@ -319,190 +391,413 @@ const Settings = () => {
               </div>
             </TabsContent>
 
-            {/* Notifications */}
-            <TabsContent value="notifications">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Settings & Privacy - Combined */}
+            <TabsContent value="settings">
+              <div className="space-y-6">
+                {/* Notifications */}
                 <Card className="shadow-soft">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Bell className="w-5 h-5" />
-                      Push Notifications
+                      Notifications
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Enable Push Notifications</p>
-                        <p className="text-sm text-muted-foreground">Receive notifications on your device</p>
+                  <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Push Notifications</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium">Enable Push Notifications</p>
+                            <p className="text-xs text-muted-foreground">Receive notifications on your device</p>
+                          </div>
+                          <Switch 
+                            checked={notifications.pushNotifications}
+                            onCheckedChange={(checked) => handleNotificationChange('pushNotifications', checked)}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium">Group Messages</p>
+                          </div>
+                          <Switch 
+                            checked={notifications.groupMessages}
+                            onCheckedChange={(checked) => handleNotificationChange('groupMessages', checked)}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium">Event Reminders</p>
+                          </div>
+                          <Switch 
+                            checked={notifications.eventReminders}
+                            onCheckedChange={(checked) => handleNotificationChange('eventReminders', checked)}
+                          />
+                        </div>
                       </div>
-                      <Switch 
-                        checked={notifications.pushNotifications}
-                        onCheckedChange={(checked) => handleNotificationChange('pushNotifications', checked)}
-                      />
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Group Messages</p>
-                        <p className="text-sm text-muted-foreground">Notifications for group messages</p>
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Email & Other</h4>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium">Email Notifications</p>
+                          </div>
+                          <Switch 
+                            checked={notifications.emailNotifications}
+                            onCheckedChange={(checked) => handleNotificationChange('emailNotifications', checked)}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium">Weekly Digest</p>
+                          </div>
+                          <Switch 
+                            checked={notifications.weeklyDigest}
+                            onCheckedChange={(checked) => handleNotificationChange('weeklyDigest', checked)}
+                          />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-medium">Sound Enabled</p>
+                          </div>
+                          <Switch 
+                            checked={notifications.soundEnabled}
+                            onCheckedChange={(checked) => handleNotificationChange('soundEnabled', checked)}
+                          />
+                        </div>
                       </div>
-                      <Switch 
-                        checked={notifications.groupMessages}
-                        onCheckedChange={(checked) => handleNotificationChange('groupMessages', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Event Reminders</p>
-                        <p className="text-sm text-muted-foreground">Reminders for upcoming events</p>
-                      </div>
-                      <Switch 
-                        checked={notifications.eventReminders}
-                        onCheckedChange={(checked) => handleNotificationChange('eventReminders', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Marketplace Updates</p>
-                        <p className="text-sm text-muted-foreground">New items and deals</p>
-                      </div>
-                      <Switch 
-                        checked={notifications.marketplaceUpdates}
-                        onCheckedChange={(checked) => handleNotificationChange('marketplaceUpdates', checked)}
-                      />
                     </div>
                   </CardContent>
                 </Card>
 
+                {/* Privacy & Security */}
                 <Card className="shadow-soft">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Mail className="w-5 h-5" />
-                      Email Notifications
+                      <Shield className="w-5 h-5" />
+                      Privacy & Security
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
+                  <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="space-y-4">
                       <div>
-                        <p className="font-medium text-foreground">Email Notifications</p>
-                        <p className="text-sm text-muted-foreground">Get updates via email</p>
+                        <label className="text-sm font-medium mb-2 block">Profile Visibility</label>
+                        <Select value={privacy.profileVisibility} onValueChange={(value) => handlePrivacyChange('profileVisibility', value)}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="public">Public</SelectItem>
+                            <SelectItem value="members">Members Only</SelectItem>
+                            <SelectItem value="private">Private</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
-                      <Switch 
-                        checked={notifications.emailNotifications}
-                        onCheckedChange={(checked) => handleNotificationChange('emailNotifications', checked)}
-                      />
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Who can message you</label>
+                        <Select value={privacy.allowMessages} onValueChange={(value) => handlePrivacyChange('allowMessages', value)}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="everyone">Everyone</SelectItem>
+                            <SelectItem value="members">Members Only</SelectItem>
+                            <SelectItem value="none">No One</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Weekly Digest</p>
-                        <p className="text-sm text-muted-foreground">Summary of weekly activity</p>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium">Show Online Status</p>
+                        <Switch 
+                          checked={privacy.showOnlineStatus}
+                          onCheckedChange={(checked) => handlePrivacyChange('showOnlineStatus', checked)}
+                        />
                       </div>
-                      <Switch 
-                        checked={notifications.weeklyDigest}
-                        onCheckedChange={(checked) => handleNotificationChange('weeklyDigest', checked)}
-                      />
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium">Show Email</p>
+                        <Switch 
+                          checked={privacy.showEmail}
+                          onCheckedChange={(checked) => handlePrivacyChange('showEmail', checked)}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium">Allow Tagging</p>
+                        <Switch 
+                          checked={privacy.allowTagging}
+                          onCheckedChange={(checked) => handlePrivacyChange('allowTagging', checked)}
+                        />
+                      </div>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Message Preview</p>
-                        <p className="text-sm text-muted-foreground">Show message content in notifications</p>
-                      </div>
-                      <Switch 
-                        checked={notifications.messagePreview}
-                        onCheckedChange={(checked) => handleNotificationChange('messagePreview', checked)}
-                      />
+                  </CardContent>
+                </Card>
+
+                {/* App Preferences */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <SettingsIcon className="w-5 h-5" />
+                      App Preferences
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Theme</label>
+                      <Select value={preferences.theme} onValueChange={(value) => handlePreferenceChange('theme', value)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="light">Light</SelectItem>
+                          <SelectItem value="dark">Dark</SelectItem>
+                          <SelectItem value="auto">Auto</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Sound Notifications</p>
-                        <p className="text-sm text-muted-foreground">Play sound for notifications</p>
-                      </div>
-                      <Switch 
-                        checked={notifications.soundEnabled}
-                        onCheckedChange={(checked) => handleNotificationChange('soundEnabled', checked)}
-                      />
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Language</label>
+                      <Select value={preferences.language} onValueChange={(value) => handlePreferenceChange('language', value)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="en">English</SelectItem>
+                          <SelectItem value="es">Spanish</SelectItem>
+                          <SelectItem value="fr">French</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Font Size</label>
+                      <Select value={preferences.fontSize} onValueChange={(value) => handlePreferenceChange('fontSize', value)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="small">Small</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="large">Large</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </TabsContent>
 
-            {/* Privacy & Security */}
-            <TabsContent value="privacy">
+            {/* Transactions */}
+            <TabsContent value="transactions">
+              <div className="space-y-6">
+                {/* Current Transactions */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Receipt className="w-5 h-5" />
+                      Current Transactions
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {transactions.current.map((transaction) => (
+                        <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          <div className="flex items-center gap-4">
+                            <div className={`w-3 h-3 rounded-full ${
+                              transaction.status === 'pending' ? 'bg-yellow-500' : 
+                              transaction.status === 'processing' ? 'bg-blue-500' : 'bg-green-500'
+                            }`} />
+                            <div>
+                              <p className="font-medium">{transaction.item}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {transaction.type === 'sale' ? `Buyer: ${transaction.buyer}` : `Seller: ${transaction.seller}`}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-medium">${transaction.amount}</p>
+                            <Badge variant="secondary">{transaction.status}</Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Transaction History */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <History className="w-5 h-5" />
+                      Transaction History
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {transactions.history.map((transaction) => (
+                        <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          <div className="flex items-center gap-4">
+                            <div className="w-3 h-3 rounded-full bg-green-500" />
+                            <div>
+                              <p className="font-medium">{transaction.item}</p>
+                              <p className="text-sm text-muted-foreground">{transaction.date}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-medium">${transaction.amount}</p>
+                            <Badge variant="secondary" className="bg-green-100 text-green-700">Completed</Badge>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Bank Information for Sellers */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Banknote className="w-5 h-5" />
+                      Bank Information (Seller)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Account Holder</label>
+                        <Input value={bankInfo.accountHolder} readOnly />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Bank Name</label>
+                        <Input value={bankInfo.bankName} readOnly />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Account Number</label>
+                        <Input value={bankInfo.accountNumber} readOnly />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Routing Number</label>
+                        <Input value={bankInfo.routingNumber} readOnly />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {bankInfo.verified ? (
+                        <>
+                          <CheckCircle className="w-5 h-5 text-green-500" />
+                          <span className="text-sm text-green-600">Bank account verified</span>
+                        </>
+                      ) : (
+                        <>
+                          <Clock className="w-5 h-5 text-yellow-500" />
+                          <span className="text-sm text-yellow-600">Verification pending</span>
+                        </>
+                      )}
+                    </div>
+                    <Button variant="outline" size="sm">Update Bank Information</Button>
+                  </CardContent>
+                </Card>
+
+                {/* Payment Options for Buyers */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Wallet className="w-5 h-5" />
+                      Payment Options (Buyer)
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-3">Saved Cards</h4>
+                      <div className="space-y-3">
+                        {paymentOptions.cards.map((card) => (
+                          <div key={card.id} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <CreditCard className="w-5 h-5" />
+                              <div>
+                                <p className="font-medium">{card.type} ending in {card.last4}</p>
+                                <p className="text-sm text-muted-foreground">Expires {card.expiry}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {card.isDefault && <Badge variant="secondary">Default</Badge>}
+                              <Button variant="outline" size="sm">Edit</Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <Button variant="outline" size="sm" className="mt-3">
+                        + Add New Card
+                      </Button>
+                    </div>
+                    
+                    <Separator />
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center text-white text-sm font-bold">P</div>
+                          <div>
+                            <p className="font-medium">PayPal</p>
+                            <p className="text-sm text-muted-foreground">{paymentOptions.paypal.email}</p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          {paymentOptions.paypal.connected ? 'Disconnect' : 'Connect'}
+                        </Button>
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-gray-900 rounded flex items-center justify-center text-white text-sm font-bold">A</div>
+                          <div>
+                            <p className="font-medium">Apple Pay</p>
+                            <p className="text-sm text-muted-foreground">Quick and secure payments</p>
+                          </div>
+                        </div>
+                        <Switch checked={paymentOptions.applePay.enabled} />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </TabsContent>
+
+            {/* Account Management */}
+            <TabsContent value="account">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <Card className="shadow-soft">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Shield className="w-5 h-5" />
-                      Privacy Settings
+                      <Crown className="w-5 h-5" />
+                      Membership
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium text-foreground">Profile Visibility</p>
-                        <p className="text-sm text-muted-foreground">Who can see your profile</p>
+                        <p className="font-medium text-foreground">Current Plan</p>
+                        <p className="text-sm text-muted-foreground">Premium Member</p>
                       </div>
-                      <Select 
-                        value={privacy.profileVisibility}
-                        onValueChange={(value) => handlePrivacyChange('profileVisibility', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="public">Public</SelectItem>
-                          <SelectItem value="members">Members Only</SelectItem>
-                          <SelectItem value="private">Private</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Badge className="bg-gradient-to-br from-orange-400 to-red-500 text-white">Premium</Badge>
                     </div>
                     <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Show Online Status</p>
-                        <p className="text-sm text-muted-foreground">Let others see when you're online</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Billing</span>
+                        <span>$9.99/month</span>
                       </div>
-                      <Switch 
-                        checked={privacy.showOnlineStatus}
-                        onCheckedChange={(checked) => handlePrivacyChange('showOnlineStatus', checked)}
-                      />
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Next Payment</span>
+                        <span>Feb 15, 2024</span>
+                      </div>
                     </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Allow Messages</p>
-                        <p className="text-sm text-muted-foreground">Who can send you messages</p>
-                      </div>
-                      <Select 
-                        value={privacy.allowMessages}
-                        onValueChange={(value) => handlePrivacyChange('allowMessages', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="everyone">Everyone</SelectItem>
-                          <SelectItem value="members">Members Only</SelectItem>
-                          <SelectItem value="none">No One</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Show Email</p>
-                        <p className="text-sm text-muted-foreground">Display email in profile</p>
-                      </div>
-                      <Switch 
-                        checked={privacy.showEmail}
-                        onCheckedChange={(checked) => handlePrivacyChange('showEmail', checked)}
-                      />
+                    <div className="space-y-2">
+                      <Button className="w-full bg-gradient-to-br from-orange-400 to-red-500 text-white">
+                        Manage Subscription
+                      </Button>
+                      <Button variant="outline" className="w-full">
+                        Billing History
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -511,7 +806,7 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Lock className="w-5 h-5" />
-                      Security
+                      Account Security
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -534,7 +829,40 @@ const Settings = () => {
                       </div>
                       <Button variant="outline" size="sm">Enable</Button>
                     </div>
-                    <Separator />
+                  </CardContent>
+                </Card>
+
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Download className="w-5 h-5" />
+                      Data & Privacy
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Download className="w-4 h-4 mr-2" />
+                      Download My Data
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Privacy Settings
+                    </Button>
+                    <Button variant="outline" className="w-full justify-start text-red-600">
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete Account
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <LogOut className="w-5 h-5" />
+                      Session Management
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div>
                       <p className="font-medium text-foreground mb-2">Active Sessions</p>
                       <div className="space-y-2">
@@ -550,188 +878,11 @@ const Settings = () => {
                         </Button>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            {/* App Preferences */}
-            <TabsContent value="preferences">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="shadow-soft">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Palette className="w-5 h-5" />
-                      Appearance
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Theme</p>
-                        <p className="text-sm text-muted-foreground">Choose your preferred theme</p>
-                      </div>
-                      <Select 
-                        value={preferences.theme}
-                        onValueChange={(value) => handlePreferenceChange('theme', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-                          <SelectItem value="dark">Dark</SelectItem>
-                          <SelectItem value="system">System</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
                     <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Font Size</p>
-                        <p className="text-sm text-muted-foreground">Adjust text size</p>
-                      </div>
-                      <Select 
-                        value={preferences.fontSize}
-                        onValueChange={(value) => handlePreferenceChange('fontSize', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="small">Small</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="large">Large</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="shadow-soft">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Globe className="w-5 h-5" />
-                      General Preferences
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Language</p>
-                        <p className="text-sm text-muted-foreground">Select your language</p>
-                      </div>
-                      <Select 
-                        value={preferences.language}
-                        onValueChange={(value) => handlePreferenceChange('language', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="en">English</SelectItem>
-                          <SelectItem value="es">Spanish</SelectItem>
-                          <SelectItem value="fr">French</SelectItem>
-                          <SelectItem value="de">German</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Auto-play Videos</p>
-                        <p className="text-sm text-muted-foreground">Automatically play videos in feed</p>
-                      </div>
-                      <Switch 
-                        checked={preferences.autoplay}
-                        onCheckedChange={(checked) => handlePreferenceChange('autoplay', checked)}
-                      />
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-foreground">Data Usage</p>
-                        <p className="text-sm text-muted-foreground">Control data consumption</p>
-                      </div>
-                      <Select 
-                        value={preferences.dataUsage}
-                        onValueChange={(value) => handlePreferenceChange('dataUsage', value)}
-                      >
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="low">Low</SelectItem>
-                          <SelectItem value="standard">Standard</SelectItem>
-                          <SelectItem value="high">High</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            {/* Account Management */}
-            <TabsContent value="account">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="shadow-soft">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Crown className="w-5 h-5" />
-                      Membership
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="text-center p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg">
-                      <Badge className="bg-gradient-to-r from-orange-400 to-red-500 text-white mb-2">
-                        Free Plan
-                      </Badge>
-                      <p className="text-sm text-muted-foreground">You're currently on the Free plan</p>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Current benefits:</p>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Join up to 2 groups</li>
-                        <li>• Basic messaging</li>
-                        <li>• Standard support</li>
-                      </ul>
-                    </div>
-                    <Button className="w-full bg-gradient-to-br from-orange-400 to-red-500 text-white">
-                      <Crown className="w-4 h-4 mr-2" />
-                      Upgrade to Premium
+                    <Button variant="outline" className="w-full justify-start text-red-600">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out of All Devices
                     </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="shadow-soft">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Download className="w-5 h-5" />
-                      Data & Privacy
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <Button variant="outline" className="w-full justify-start">
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Your Data
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Import Data
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Shield className="w-4 h-4 mr-2" />
-                      Privacy Report
-                    </Button>
-                    <Separator />
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium text-red-600">Danger Zone</p>
-                      <Button variant="outline" className="w-full justify-start text-red-600 border-red-300 hover:bg-red-50">
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Delete Account
-                      </Button>
-                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -739,35 +890,79 @@ const Settings = () => {
 
             {/* Help & Support */}
             <TabsContent value="help">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-6">
                 <Card className="shadow-soft">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <HelpCircle className="w-5 h-5" />
-                      Support & Help
+                      Help Center
                     </CardTitle>
                   </CardHeader>
+                  <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium">Get Support</h4>
+                      <Button variant="outline" className="w-full justify-start">
+                        <MessageSquare className="w-4 h-4 mr-2" />
+                        Contact Support
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start">
+                        <HelpCircle className="w-4 h-4 mr-2" />
+                        FAQ
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Phone className="w-4 h-4 mr-2" />
+                        Call Support: 1-800-HELP
+                      </Button>
+                    </div>
+                    <div className="space-y-3">
+                      <h4 className="font-medium">Resources</h4>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Users className="w-4 h-4 mr-2" />
+                        Community Guidelines
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Shield className="w-4 h-4 mr-2" />
+                        Privacy Policy
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Download className="w-4 h-4 mr-2" />
+                        Terms of Service
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle>Frequently Asked Questions</CardTitle>
+                  </CardHeader>
                   <CardContent className="space-y-4">
-                    <Button variant="outline" className="w-full justify-start">
-                      <HelpCircle className="w-4 h-4 mr-2" />
-                      Help Center
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <MessageSquare className="w-4 h-4 mr-2" />
-                      Contact Support
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Users className="w-4 h-4 mr-2" />
-                      Community Guidelines
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Shield className="w-4 h-4 mr-2" />
-                      Privacy Policy
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Globe className="w-4 h-4 mr-2" />
-                      Terms of Service
-                    </Button>
+                    <div className="space-y-4">
+                      <div className="border-l-4 border-blue-500 pl-4">
+                        <h4 className="font-medium">How do I verify my account?</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Upload a government-issued ID and wait 2-3 business days for verification. You'll receive an email notification once complete.
+                        </p>
+                      </div>
+                      <div className="border-l-4 border-green-500 pl-4">
+                        <h4 className="font-medium">How do marketplace transactions work?</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Buyers pay through our secure system. Funds are held until the seller confirms shipment and buyer confirms receipt.
+                        </p>
+                      </div>
+                      <div className="border-l-4 border-orange-500 pl-4">
+                        <h4 className="font-medium">What payment methods are accepted?</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          We accept major credit cards, PayPal, and Apple Pay. Bank transfers are available for sellers receiving payments.
+                        </p>
+                      </div>
+                      <div className="border-l-4 border-purple-500 pl-4">
+                        <h4 className="font-medium">How do I create or join a group?</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Visit the Groups page to browse existing groups or click "Create Group" to start your own community around shared interests.
+                        </p>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -775,46 +970,48 @@ const Settings = () => {
                   <CardHeader>
                     <CardTitle>App Information</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Version</span>
-                        <span className="text-sm font-medium">2.1.0</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Last Updated</span>
-                        <span className="text-sm font-medium">Dec 15, 2024</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Platform</span>
-                        <span className="text-sm font-medium">Web</span>
+                      <h4 className="font-medium">Version Details</h4>
+                      <div className="space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Version</span>
+                          <span>2.1.0</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Last Updated</span>
+                          <span>Jan 15, 2024</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Platform</span>
+                          <span>Web</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Build</span>
+                          <span>2024.01.15.1</span>
+                        </div>
                       </div>
                     </div>
-                    <Separator />
-                    <div className="text-center">
-                      <Button variant="outline" size="sm">
-                        Check for Updates
-                      </Button>
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Quick Links</h4>
+                      <div className="space-y-2">
+                        <Button variant="outline" className="w-full justify-start">
+                          <Globe className="w-4 h-4 mr-2" />
+                          About Us
+                        </Button>
+                        <Button variant="outline" className="w-full justify-start">
+                          <Users className="w-4 h-4 mr-2" />
+                          Community Forum
+                        </Button>
+                        <Button variant="outline" className="w-full justify-start">
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Feature Requests
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
               </div>
-
-              {/* Sign Out */}
-              <Card className="shadow-soft mt-6">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-foreground">Sign Out</p>
-                      <p className="text-sm text-muted-foreground">Sign out from your account on this device</p>
-                    </div>
-                    <Button variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sign Out
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
             </TabsContent>
           </Tabs>
         </div>
