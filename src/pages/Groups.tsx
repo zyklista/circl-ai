@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, MapPin, Eye, Plus } from "lucide-react";
+import { Users, MapPin, Eye, Plus, Star, Crown } from "lucide-react";
 
 const groups = [
   {
@@ -69,10 +69,10 @@ const Groups = () => {
                           <Users className="w-4 h-4" />
                           {group.members} members
                         </div>
-                        <Badge variant="outline">{group.category}</Badge>
+                        <Badge variant="outline" className="border-orange-300 text-orange-600">{group.category}</Badge>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="border-orange-300 text-orange-600 hover:bg-orange-50">
                       <Eye className="w-4 h-4 mr-2" />
                       View
                     </Button>
@@ -99,7 +99,7 @@ const Groups = () => {
                           <Users className="w-4 h-4" />
                           {group.members} members
                         </div>
-                        <Badge variant="outline">{group.category}</Badge>
+                        <Badge variant="outline" className="border-orange-300 text-orange-600">{group.category}</Badge>
                       </div>
                     </div>
                     <Button className="bg-gradient-to-br from-orange-400 to-red-500 text-white">
@@ -155,21 +155,23 @@ const Groups = () => {
           </Card>
 
           {/* Create Group - Center Button */}
-          <div className="flex justify-center py-8">
-            <Card className="shadow-lg border-2 border-dashed border-orange-300 bg-gradient-to-r from-orange-50 to-red-50">
-              <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white mx-auto mb-4">
-                  <Plus className="w-8 h-8" />
+          <div className="flex justify-center py-12">
+            <Card className="shadow-xl border-2 border-dashed border-orange-300 bg-gradient-to-r from-orange-50 to-red-50 max-w-md">
+              <CardContent className="p-10 text-center">
+                <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                  <Plus className="w-10 h-10" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Start Your Own Community</h3>
-                <p className="text-muted-foreground mb-4">Create a group and bring people together around shared interests</p>
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <span className="text-sm bg-amber-100 text-amber-800 px-3 py-1 rounded-full">Premium Feature</span>
+                <h3 className="text-2xl font-bold text-foreground mb-3">Start Your Own Community</h3>
+                <p className="text-muted-foreground mb-6 leading-relaxed">Create a group and bring people together around shared interests. Build lasting connections and meaningful discussions.</p>
+                <div className="flex items-center justify-center gap-2 mb-6">
+                  <Crown className="w-4 h-4 text-amber-600" />
+                  <span className="text-sm bg-amber-100 text-amber-800 px-4 py-2 rounded-full font-medium">Premium Feature</span>
                 </div>
-                <Button className="bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-lg">
+                <Button size="lg" className="bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-xl px-8 py-3 text-lg">
+                  <Plus className="w-5 h-5 mr-2" />
                   Create Your Group
                 </Button>
-                <p className="text-xs text-muted-foreground mt-2">Available for Premium & VIP members</p>
+                <p className="text-xs text-muted-foreground mt-4">Available for Premium & VIP members only</p>
               </CardContent>
             </Card>
           </div>
