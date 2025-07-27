@@ -59,6 +59,10 @@ export default {
 					hover: 'hsl(var(--community-hover))',
 					active: 'hsl(var(--community-active))'
 				},
+				events: {
+					primary: 'hsl(var(--events-primary))',
+					secondary: 'hsl(var(--events-secondary))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -78,7 +82,8 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-secondary': 'var(--gradient-secondary)',
-				'gradient-accent': 'var(--gradient-accent)'
+				'gradient-accent': 'var(--gradient-accent)',
+				'gradient-events': 'var(--events-banner)'
 			},
 			boxShadow: {
 				'soft': 'var(--shadow-soft)',

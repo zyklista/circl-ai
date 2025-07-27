@@ -184,9 +184,12 @@ const Events = () => {
 
   return (
     <Layout title="Events">
-      <div className="min-h-screen bg-gradient-to-br from-background to-accent/20">
+      <div 
+        className="min-h-screen p-6"
+        style={{ background: 'var(--events-bg)' }}
+      >
         {/* Live Events Banner */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-red-600 text-white mb-6">
+        <div className="relative overflow-hidden bg-gradient-events text-white mb-6">
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="relative max-w-6xl mx-auto p-6">
             <div className="flex items-center gap-2 mb-4">
@@ -234,7 +237,7 @@ const Events = () => {
                 <Filter className="w-4 h-4 mr-2" />
                 Filter
               </Button>
-              <Button className="bg-gradient-to-br from-orange-400 to-red-500 text-white">
+              <Button className="bg-events-primary text-white hover:bg-events-primary/90">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Event
               </Button>
@@ -449,7 +452,7 @@ const Events = () => {
                           <div className="flex gap-2">
                             <Button 
                               onClick={() => handleJoinEvent(event.id)}
-                              className="flex-1 bg-gradient-to-br from-orange-400 to-red-500 text-white"
+                              className="flex-1 bg-events-primary text-white hover:bg-events-primary/90"
                             >
                               Join Event
                             </Button>
@@ -487,7 +490,7 @@ const Events = () => {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="text-center py-8">
-                    <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 bg-events-primary rounded-full flex items-center justify-center mx-auto mb-4">
                       <UserPlus className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-xl font-semibold mb-2">Grow the Community</h3>
@@ -499,7 +502,7 @@ const Events = () => {
                     <div className="space-y-4">
                       <Button 
                         onClick={handleInviteFriends}
-                        className="bg-gradient-to-br from-orange-400 to-red-500 text-white"
+                        className="bg-events-primary text-white hover:bg-events-primary/90"
                       >
                         <UserPlus className="w-4 h-4 mr-2" />
                         Invite Friends
@@ -520,7 +523,7 @@ const Events = () => {
                   </div>
                   
                   {/* Referral Benefits */}
-                  <div className="bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-lg">
+                  <div className="bg-gradient-to-r from-events-secondary/20 to-events-primary/20 p-6 rounded-lg">
                     <h4 className="font-semibold mb-3">🎁 Referral Benefits</h4>
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       <li>• Get priority access to exclusive events</li>

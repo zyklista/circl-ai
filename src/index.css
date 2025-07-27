@@ -44,8 +44,13 @@
     /* Page-specific backgrounds */
     --home-bg: linear-gradient(135deg, hsl(55 100% 85%), hsl(200 80% 70%), hsl(120 60% 60%));
     --groups-bg: linear-gradient(135deg, hsl(35 85% 80%), hsl(50 90% 85%));
-    --events-bg: linear-gradient(135deg, hsl(200 70% 80%), hsl(55 80% 85%));
+    --events-bg: linear-gradient(135deg, hsl(200 90% 88%), hsl(220 85% 92%));
     --marketplace-bg: linear-gradient(135deg, hsl(90 60% 75%), hsl(60 85% 80%));
+    
+    /* Events color palette */
+    --events-primary: 227 50% 59%;
+    --events-secondary: 250 60% 75%;
+    --events-banner: linear-gradient(135deg, hsl(227 50% 59%), hsl(250 60% 75%));
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(262 78% 58%), hsl(268 86% 72%));
