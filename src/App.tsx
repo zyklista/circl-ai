@@ -9,6 +9,8 @@ import GroupPage from "./pages/GroupPage";
 import PostPage from "./pages/PostPage";
 import Events from "./pages/Events";
 import EventPage from "./pages/EventPage";
+import EditEvent from "./pages/EditEvent";
+import ShareEvent from "./pages/ShareEvent";
 import JoinEvent from "./pages/JoinEvent";
 import CreateEvent from "./pages/CreateEvent";
 import Marketplace from "./pages/Marketplace";
@@ -49,6 +51,8 @@ const App = () => (
           <Route path="/events" element={<Events />} />
           <Route path="/events/create" element={<CreateEvent />} />
           <Route path="/events/:id" element={<EventPage />} />
+          <Route path="/events/:id/edit" element={<EditEvent />} />
+          <Route path="/events/:id/share" element={<ShareEvent />} />
           <Route path="/events/:id/join" element={<JoinEvent />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/messages" element={<Messages />} />

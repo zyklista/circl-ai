@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { 
   Calendar, 
@@ -22,9 +23,17 @@ import {
   Settings,
   Bell,
   Copy,
-  ExternalLink
+  ExternalLink,
+  ThumbsUp,
+  Laugh,
+  Angry,
+  Frown,
+  Send,
+  Edit,
+  MoreHorizontal
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 // Sample event data
 const eventData = {
@@ -74,11 +83,62 @@ const attendees = [
 const EventPage = () => {
   const [isAttending, setIsAttending] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
+  const [reactions, setReactions] = useState({
+    like: 45,
+    love: 23,
+    laugh: 8,
+    angry: 2,
+    sad: 1,
+    userReaction: null as string | null
+  });
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      user: { name: "Alice Johnson", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b3ac?w=40&h=40&fit=crop" },
+      content: "This looks amazing! Can't wait to attend 🎨",
+      timestamp: "2 hours ago",
+      likes: 12
+    },
+    {
+      id: 2,
+      user: { name: "Bob Smith", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop" },
+      content: "Perfect timing for my design learning journey. Thanks for organizing!",
+      timestamp: "4 hours ago",
+      likes: 8
+    }
+  ]);
+  const [newComment, setNewComment] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleAttendance = () => {
     setIsAttending(!isAttending);
+  };
+
+  const handleReaction = (reactionType: string) => {
+    toast({
+      title: `${reactionType} reaction added!`,
+      description: "Your reaction has been recorded.",
+    });
+  };
+
+  const handleComment = () => {
+    if (newComment.trim()) {
+      const comment = {
+        id: comments.length + 1,
+        user: { name: "You", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop" },
+        content: newComment,
+        timestamp: "Just now",
+        likes: 0
+      };
+      setComments([...comments, comment]);
+      setNewComment("");
+      toast({
+        title: "Comment Added",
+        description: "Your comment has been posted!",
+      });
+    }
   };
 
   return (
@@ -205,11 +265,24 @@ const EventPage = () => {
                         <Button variant="outline" size="icon" className="flex-1">
                           <Heart className="w-4 h-4" />
                         </Button>
-                        <Button variant="outline" size="icon" className="flex-1">
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="flex-1"
+                          onClick={() => navigate(`/events/${id}/share`)}
+                        >
                           <Share2 className="w-4 h-4" />
                         </Button>
                         <Button variant="outline" size="icon" className="flex-1">
                           <Bell className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="flex-1"
+                          onClick={() => navigate(`/events/${id}/edit`)}
+                        >
+                          <Edit className="w-4 h-4" />
                         </Button>
                       </div>
                     </div>
@@ -222,6 +295,122 @@ const EventPage = () => {
 
         {/* Content Tabs */}
         <div className="max-w-6xl mx-auto p-6">
+          {/* Facebook-style Reactions & Comments */}
+          <Card className="shadow-soft mb-6">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    {reactions.like > 0 && <span className="flex items-center gap-1 text-sm"><ThumbsUp className="w-4 h-4 text-blue-600" /> {reactions.like}</span>}
+                    {reactions.love > 0 && <span className="flex items-center gap-1 text-sm"><Heart className="w-4 h-4 text-red-500" /> {reactions.love}</span>}
+                    {reactions.laugh > 0 && <span className="flex items-center gap-1 text-sm"><Laugh className="w-4 h-4 text-yellow-500" /> {reactions.laugh}</span>}
+                    {reactions.angry > 0 && <span className="flex items-center gap-1 text-sm"><Angry className="w-4 h-4 text-red-600" /> {reactions.angry}</span>}
+                    {reactions.sad > 0 && <span className="flex items-center gap-1 text-sm"><Frown className="w-4 h-4 text-gray-500" /> {reactions.sad}</span>}
+                  </div>
+                  <span className="text-sm text-muted-foreground">{comments.length} comments</span>
+                </div>
+              </div>
+
+              <Separator className="mb-4" />
+
+              {/* Reaction Buttons */}
+              <div className="flex justify-around mb-4">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleReaction('like')}
+                  className={`flex items-center gap-2 ${reactions.userReaction === 'like' ? 'text-blue-600' : ''}`}
+                >
+                  <ThumbsUp className="w-4 h-4" />
+                  Like
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleReaction('love')}
+                  className={`flex items-center gap-2 ${reactions.userReaction === 'love' ? 'text-red-500' : ''}`}
+                >
+                  <Heart className="w-4 h-4" />
+                  Love
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => handleReaction('laugh')}
+                  className={`flex items-center gap-2 ${reactions.userReaction === 'laugh' ? 'text-yellow-500' : ''}`}
+                >
+                  <Laugh className="w-4 h-4" />
+                  Laugh
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Comment
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => navigate(`/events/${id}/share`)}
+                  className="flex items-center gap-2"
+                >
+                  <Share2 className="w-4 h-4" />
+                  Share
+                </Button>
+              </div>
+
+              <Separator className="mb-4" />
+
+              {/* Comments Section */}
+              <div className="space-y-4">
+                {comments.map((comment) => (
+                  <div key={comment.id} className="flex gap-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={comment.user.avatar} />
+                      <AvatarFallback>{comment.user.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="bg-gray-100 rounded-lg p-3">
+                        <h5 className="font-medium text-sm">{comment.user.name}</h5>
+                        <p className="text-sm">{comment.content}</p>
+                      </div>
+                      <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
+                        <button className="hover:underline">Like</button>
+                        <button className="hover:underline">Reply</button>
+                        <span>{comment.timestamp}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Add Comment */}
+                <div className="flex gap-3 mt-4">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop" />
+                    <AvatarFallback>You</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 flex gap-2">
+                    <Textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Write a comment..."
+                      className="min-h-[40px] resize-none"
+                    />
+                    <Button 
+                      onClick={handleComment}
+                      size="sm"
+                      className="bg-events-primary text-white hover:bg-events-primary/90"
+                    >
+                      <Send className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-4 mb-6">
               <TabsTrigger value="details">Details</TabsTrigger>

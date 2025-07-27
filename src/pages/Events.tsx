@@ -285,7 +285,11 @@ const Events = () => {
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-4">
                     {myCreatedEvents.map((event) => (
-                      <Card key={event.id} className="overflow-hidden hover:shadow-md transition-all">
+                      <Card 
+                        key={event.id} 
+                        className="overflow-hidden hover:shadow-md transition-all cursor-pointer"
+                        onClick={() => navigate(`/events/${event.id}`)}
+                      >
                         <div className="relative">
                           <img 
                             src={event.image} 
@@ -318,11 +322,20 @@ const Events = () => {
                             </div>
                           </div>
                           
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm" className="flex-1">
+                          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1"
+                              onClick={() => navigate(`/events/${event.id}/edit`)}
+                            >
                               Edit
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => navigate(`/events/${event.id}/share`)}
+                            >
                               <Share2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -344,7 +357,11 @@ const Events = () => {
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-4">
                     {myJoinedEvents.map((event) => (
-                      <Card key={event.id} className="overflow-hidden hover:shadow-md transition-all">
+                      <Card 
+                        key={event.id} 
+                        className="overflow-hidden hover:shadow-md transition-all cursor-pointer"
+                        onClick={() => navigate(`/events/${event.id}`)}
+                      >
                         <div className="relative">
                           <img 
                             src={event.image} 
@@ -381,7 +398,7 @@ const Events = () => {
                             </div>
                           </div>
                           
-                          <div className="flex gap-2">
+                          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                             <Button 
                               variant={event.status === "attending" ? "outline" : "default"} 
                               size="sm" 
@@ -389,7 +406,11 @@ const Events = () => {
                             >
                               {event.status === "attending" ? "Cancel" : "Attend"}
                             </Button>
-                            <Button variant="outline" size="sm" onClick={() => handleShareEvent(event.id)}>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              onClick={() => handleShareEvent(event.id)}
+                            >
                               <Share2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -413,7 +434,11 @@ const Events = () => {
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-6">
                     {recommendedEvents.map((event) => (
-                      <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-all hover-scale">
+                      <Card 
+                        key={event.id} 
+                        className="overflow-hidden hover:shadow-lg transition-all hover-scale cursor-pointer"
+                        onClick={() => navigate(`/events/${event.id}`)}
+                      >
                         <div className="relative">
                           <img 
                             src={event.image} 
@@ -458,7 +483,7 @@ const Events = () => {
                             </div>
                           </div>
                           
-                          <div className="flex gap-2">
+                          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                             <Button 
                               onClick={() => handleJoinEvent(event.id)}
                               className="flex-1 bg-events-primary text-white hover:bg-events-primary/90"
