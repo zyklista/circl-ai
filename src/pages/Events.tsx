@@ -23,6 +23,7 @@ import {
   ChevronRight,
   Zap
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 // Live advertised events for banner
@@ -151,6 +152,7 @@ const recommendedEvents = [
 
 const Events = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentBannerEvent, setCurrentBannerEvent] = useState(0);
 
@@ -218,7 +220,11 @@ const Events = () => {
                       <span>⏰ {event.timeLeft} left</span>
                       <span>👥 {event.attendees.toLocaleString()} joined</span>
                     </div>
-                    <Button variant="secondary" size="sm">
+                    <Button 
+                      variant="secondary" 
+                      size="sm"
+                      onClick={() => navigate("/events/live1/join")}
+                    >
                       Join Now
                     </Button>
                   </div>
@@ -237,7 +243,10 @@ const Events = () => {
                 <Filter className="w-4 h-4 mr-2" />
                 Filter
               </Button>
-              <Button className="bg-events-primary text-white hover:bg-events-primary/90">
+              <Button 
+                className="bg-events-primary text-white hover:bg-events-primary/90"
+                onClick={() => navigate("/events/create")}
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Event
               </Button>

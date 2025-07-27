@@ -183,26 +183,23 @@ const EventPage = () => {
                     </div>
 
                     <div className="space-y-3">
-                      <Button 
-                        onClick={handleAttendance}
-                        className={`w-full ${
-                          isAttending 
-                            ? "bg-green-600 hover:bg-green-700" 
-                            : "bg-events-primary hover:bg-events-primary/90"
-                        } text-white`}
-                      >
-                        {isAttending ? (
-                          <>
-                            <CheckCircle className="w-4 h-4 mr-2" />
-                            Attending
-                          </>
-                        ) : (
-                          <>
-                            <UserPlus className="w-4 h-4 mr-2" />
-                            Join Event
-                          </>
-                        )}
-                      </Button>
+                      {!isAttending ? (
+                        <Button 
+                          onClick={() => navigate(`/events/${id}/join`)}
+                          className="w-full bg-events-primary hover:bg-events-primary/90 text-white"
+                        >
+                          <UserPlus className="w-4 h-4 mr-2" />
+                          Join Event
+                        </Button>
+                      ) : (
+                        <Button 
+                          onClick={handleAttendance}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Attending
+                        </Button>
+                      )}
 
                       <div className="flex gap-2">
                         <Button variant="outline" size="icon" className="flex-1">

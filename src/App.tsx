@@ -9,6 +9,8 @@ import GroupPage from "./pages/GroupPage";
 import PostPage from "./pages/PostPage";
 import Events from "./pages/Events";
 import EventPage from "./pages/EventPage";
+import JoinEvent from "./pages/JoinEvent";
+import CreateEvent from "./pages/CreateEvent";
 import Marketplace from "./pages/Marketplace";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
@@ -45,7 +47,9 @@ const App = () => (
           <Route path="/groups/:id/delete" element={<DeleteGroup />} />
           <Route path="/groups/:groupId/posts/:postId" element={<PostPage />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/create" element={<CreateEvent />} />
           <Route path="/events/:id" element={<EventPage />} />
+          <Route path="/events/:id/join" element={<JoinEvent />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />
