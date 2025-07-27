@@ -61,7 +61,7 @@ const Marketplace = () => {
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-foreground">Marketplace</h1>
-            <Button className="bg-gradient-primary text-white">
+            <Button className="bg-gradient-to-br from-cyan-400 to-blue-500 text-white">
               Sell Item
             </Button>
           </div>
@@ -115,7 +115,7 @@ const Marketplace = () => {
                     
                     <div className="flex justify-between items-center">
                       <span className="text-lg font-bold text-primary">{item.price}</span>
-                      <Button size="sm" className="bg-gradient-primary text-white">
+                      <Button size="sm" className="bg-gradient-to-br from-cyan-400 to-blue-500 text-white">
                         <ShoppingCart className="w-4 h-4 mr-1" />
                         Buy
                       </Button>
