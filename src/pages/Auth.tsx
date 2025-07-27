@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { authSchema, type AuthInput } from '@/lib/validations';
-import { Eye, EyeOff, Users, MessageCircle, Shield } from 'lucide-react';
+import { Eye, EyeOff, MessageCircle, Shield } from 'lucide-react';
 
 export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,13 +92,25 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{ background: 'var(--home-bg)' }}
+    >
       <div className="w-full max-w-md space-y-6">
         {/* Logo/Header */}
         <div className="text-center space-y-2">
           <div className="flex justify-center">
-            <div className="p-3 bg-primary/10 rounded-full">
-              <Users className="h-8 w-8 text-primary" />
+            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-red-400 via-yellow-400 to-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+                <div className="grid grid-cols-3 gap-1">
+                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
+                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                </div>
+              </div>
             </div>
           </div>
           <h1 className="text-2xl font-bold">Welcome to Circl</h1>
@@ -238,15 +250,23 @@ export default function Auth() {
         </Card>
 
         {/* Features */}
-        <div className="grid grid-cols-2 gap-4 text-center text-sm text-muted-foreground">
-          <div className="flex flex-col items-center space-y-1">
+        <div className="grid grid-cols-2 gap-4 text-center text-sm text-foreground">
+          <Button
+            variant="outline"
+            className="flex flex-col items-center space-y-1 h-auto py-3 bg-white/20 backdrop-blur-sm border-white/30 text-foreground hover:bg-white/30"
+            onClick={() => navigate('/messages')}
+          >
             <MessageCircle className="h-5 w-5" />
             <span>Secure Messaging</span>
-          </div>
-          <div className="flex flex-col items-center space-y-1">
+          </Button>
+          <Button
+            variant="outline"
+            className="flex flex-col items-center space-y-1 h-auto py-3 bg-white/20 backdrop-blur-sm border-white/30 text-foreground hover:bg-white/30"
+            onClick={() => navigate('/settings')}
+          >
             <Shield className="h-5 w-5" />
             <span>Privacy Protected</span>
-          </div>
+          </Button>
         </div>
       </div>
     </div>
