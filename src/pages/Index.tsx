@@ -173,7 +173,7 @@ const Index = () => {
             </Button>
             <Button 
               onClick={() => navigate('/marketplace')}
-              className="h-24 bg-gradient-to-br from-cyan-400 to-blue-500 text-white shadow-lg hover:shadow-xl transition-all flex flex-col items-center justify-center gap-2"
+              className="h-24 bg-gradient-to-br from-green-400 to-emerald-500 text-white shadow-lg hover:shadow-xl transition-all flex flex-col items-center justify-center gap-2"
             >
               <ShoppingCart className="w-6 h-6" />
               <span className="font-semibold">Marketplace</span>
