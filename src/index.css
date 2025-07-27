@@ -45,7 +45,7 @@
     --home-bg: linear-gradient(135deg, hsl(55 100% 85%), hsl(200 80% 70%), hsl(120 60% 60%));
     --groups-bg: linear-gradient(135deg, hsl(35 85% 80%), hsl(50 90% 85%));
     --events-bg: linear-gradient(135deg, hsl(200 90% 88%), hsl(220 85% 92%));
-    --marketplace-bg: linear-gradient(135deg, hsl(50 60% 85%), hsl(40 50% 80%));
+    --marketplace-bg: linear-gradient(135deg, hsl(90 50% 85%), hsl(50 60% 82%));
     
     /* Events color palette */
     --events-primary: 227 50% 59%;
