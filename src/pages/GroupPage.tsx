@@ -19,7 +19,6 @@ import {
   Heart, 
   MessageCircle, 
   Share, 
-  MoreHorizontal,
   Crown,
   Shield,
   UserPlus,
@@ -31,7 +30,12 @@ import {
   Flag,
   Copy,
   Download,
-  Trash2
+  Trash2,
+  FileText,
+  Radio,
+  Clapperboard,
+  Send,
+  Smile
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -134,6 +138,9 @@ const GroupPage = () => {
   const [activeTab, setActiveTab] = useState("posts");
   const [newPost, setNewPost] = useState("");
   const [isMember, setIsMember] = useState(true);
+  const [postType, setPostType] = useState("text");
+  const [expandedComments, setExpandedComments] = useState<number[]>([]);
+  const [newComments, setNewComments] = useState<{[key: number]: string}>({});
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -143,6 +150,23 @@ const GroupPage = () => {
 
   const handlePostClick = (postId: number) => {
     navigate(`/groups/${id}/posts/${postId}`);
+  };
+
+  const toggleComments = (postId: number) => {
+    setExpandedComments(prev => 
+      prev.includes(postId) 
+        ? prev.filter(id => id !== postId)
+        : [...prev, postId]
+    );
+  };
+
+  const handleComment = (postId: number) => {
+    const comment = newComments[postId];
+    if (comment?.trim()) {
+      // Here you would normally send the comment to your backend
+      console.log("New comment:", comment);
+      setNewComments(prev => ({ ...prev, [postId]: "" }));
+    }
   };
 
   return (
@@ -221,9 +245,6 @@ const GroupPage = () => {
                             <Bell className="w-4 h-4 mr-2" />
                             Joined
                           </Button>
-                          <Button size="icon" variant="outline">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
                         </>
                       ) : (
                         <Button 
@@ -294,11 +315,11 @@ const GroupPage = () => {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Main Content */}
                 <div className="lg:col-span-2 space-y-6">
-                  {/* Create Post */}
+                  {/* Create Post with Multiple Types */}
                   {isMember && (
                     <Card className="shadow-soft">
                       <CardContent className="p-6">
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 mb-4">
                           <Avatar>
                             <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop" />
                             <AvatarFallback>YU</AvatarFallback>
@@ -310,22 +331,62 @@ const GroupPage = () => {
                               onChange={(e) => setNewPost(e.target.value)}
                               className="min-h-[100px] mb-4"
                             />
-                            <div className="flex justify-between items-center">
-                              <div className="flex gap-2">
-                                <Button variant="outline" size="sm">
-                                  <Image className="w-4 h-4 mr-2" />
-                                  Photo
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                  <Video className="w-4 h-4 mr-2" />
-                                  Video
-                                </Button>
-                              </div>
-                              <Button className="bg-gradient-to-br from-orange-400 to-red-500 text-white">
-                                Post
-                              </Button>
-                            </div>
                           </div>
+                        </div>
+                        
+                        {/* Post Type Options */}
+                        <div className="grid grid-cols-5 gap-2 mb-4">
+                          <Button 
+                            variant={postType === "text" ? "default" : "outline"} 
+                            size="sm"
+                            onClick={() => setPostType("text")}
+                            className={postType === "text" ? "bg-gradient-to-br from-orange-400 to-red-500 text-white" : ""}
+                          >
+                            <FileText className="w-4 h-4 mr-2" />
+                            Note
+                          </Button>
+                          <Button 
+                            variant={postType === "photo" ? "default" : "outline"} 
+                            size="sm"
+                            onClick={() => setPostType("photo")}
+                            className={postType === "photo" ? "bg-gradient-to-br from-orange-400 to-red-500 text-white" : ""}
+                          >
+                            <Image className="w-4 h-4 mr-2" />
+                            Photo
+                          </Button>
+                          <Button 
+                            variant={postType === "video" ? "default" : "outline"} 
+                            size="sm"
+                            onClick={() => setPostType("video")}
+                            className={postType === "video" ? "bg-gradient-to-br from-orange-400 to-red-500 text-white" : ""}
+                          >
+                            <Video className="w-4 h-4 mr-2" />
+                            Video
+                          </Button>
+                          <Button 
+                            variant={postType === "live" ? "default" : "outline"} 
+                            size="sm"
+                            onClick={() => setPostType("live")}
+                            className={postType === "live" ? "bg-gradient-to-br from-orange-400 to-red-500 text-white" : ""}
+                          >
+                            <Radio className="w-4 h-4 mr-2" />
+                            Live
+                          </Button>
+                          <Button 
+                            variant={postType === "reel" ? "default" : "outline"} 
+                            size="sm"
+                            onClick={() => setPostType("reel")}
+                            className={postType === "reel" ? "bg-gradient-to-br from-orange-400 to-red-500 text-white" : ""}
+                          >
+                            <Clapperboard className="w-4 h-4 mr-2" />
+                            Reel
+                          </Button>
+                        </div>
+                        
+                        <div className="flex justify-end">
+                          <Button className="bg-gradient-to-br from-orange-400 to-red-500 text-white">
+                            Post {postType === "text" ? "Note" : postType.charAt(0).toUpperCase() + postType.slice(1)}
+                          </Button>
                         </div>
                       </CardContent>
                     </Card>
@@ -368,9 +429,6 @@ const GroupPage = () => {
                             </div>
                             <p className="text-sm text-muted-foreground">{post.timestamp}</p>
                           </div>
-                          <Button size="icon" variant="ghost">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
                         </div>
                         
                         <p className="text-foreground mb-4">{post.content}</p>
@@ -390,12 +448,20 @@ const GroupPage = () => {
                           <span>{post.comments} comments</span>
                         </div>
                         
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 mb-4">
                           <Button variant="ghost" size="sm" className="flex-1">
                             <Heart className="w-4 h-4 mr-2" />
                             Like
                           </Button>
-                          <Button variant="ghost" size="sm" className="flex-1">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            className="flex-1"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleComments(post.id);
+                            }}
+                          >
                             <MessageCircle className="w-4 h-4 mr-2" />
                             Comment
                           </Button>
@@ -404,6 +470,56 @@ const GroupPage = () => {
                             Share
                           </Button>
                         </div>
+
+                        {/* Comments Section */}
+                        {expandedComments.includes(post.id) && (
+                          <div className="border-t pt-4" onClick={(e) => e.stopPropagation()}>
+                            {/* Comment Input */}
+                            <div className="flex gap-3 mb-4">
+                              <Avatar className="w-8 h-8">
+                                <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop" />
+                                <AvatarFallback>YU</AvatarFallback>
+                              </Avatar>
+                              <div className="flex-1 flex gap-2">
+                                <Textarea 
+                                  placeholder="Write a comment..."
+                                  value={newComments[post.id] || ""}
+                                  onChange={(e) => setNewComments(prev => ({ ...prev, [post.id]: e.target.value }))}
+                                  className="min-h-[60px] resize-none"
+                                />
+                                <Button 
+                                  size="icon"
+                                  onClick={() => handleComment(post.id)}
+                                  disabled={!newComments[post.id]?.trim()}
+                                  className="bg-gradient-to-br from-orange-400 to-red-500 text-white"
+                                >
+                                  <Send className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </div>
+                            
+                            {/* Sample Comments */}
+                            <div className="space-y-3">
+                              <div className="flex gap-3">
+                                <Avatar className="w-8 h-8">
+                                  <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=32&h=32&fit=crop" />
+                                  <AvatarFallback>AC</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1">
+                                  <div className="bg-community-hover rounded-lg p-3">
+                                    <h4 className="font-semibold text-sm mb-1">Alex Chen</h4>
+                                    <p className="text-sm">Great post! Thanks for sharing this with the community.</p>
+                                  </div>
+                                  <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                                    <button className="hover:text-foreground font-medium">Like</button>
+                                    <button className="hover:text-foreground font-medium">Reply</button>
+                                    <span>5 minutes ago</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </CardContent>
                     </Card>
                   ))}
