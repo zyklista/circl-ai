@@ -1,14 +1,26 @@
-import { Menu, MessageCircle, Bell, LogOut } from "lucide-react";
+import { Menu, MessageCircle, Bell, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRoleAuth } from "@/hooks/useRoleAuth";
+import { logSecurityEvent } from "@/lib/security";
 
 interface HeaderProps {
   title?: string;
 }
 
 export function Header({ title }: HeaderProps) {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
+  const { isAdmin, isModerator } = useRoleAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await logSecurityEvent('user_logout', {}, user?.id);
+      await signOut();
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-community-surface/95 backdrop-blur-sm border-b border-border shadow-soft">
@@ -27,10 +39,20 @@ export function Header({ title }: HeaderProps) {
           <Button variant="ghost" size="icon" className="text-primary hover:bg-community-hover transition-smooth">
             <MessageCircle className="w-5 h-5" />
           </Button>
+          {(isAdmin || isModerator) && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-primary hover:bg-community-hover transition-smooth"
+              title="Admin Panel"
+            >
+              <Shield className="w-5 h-5" />
+            </Button>
+          )}
           <Button 
             variant="ghost" 
             size="icon" 
-            onClick={signOut}
+            onClick={handleSignOut}
             className="text-primary hover:bg-community-hover transition-smooth"
             title="Sign out"
           >

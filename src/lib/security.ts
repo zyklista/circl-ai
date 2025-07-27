@@ -1,78 +1,119 @@
 import DOMPurify from 'dompurify';
 
 // Content Security Policy configuration
-export const cspConfig = {
+export const CSP_CONFIG = {
   'default-src': ["'self'"],
-  'script-src': ["'self'", "'unsafe-inline'", 'https://js.stripe.com'],
+  'script-src': ["'self'", "'unsafe-inline'"],
   'style-src': ["'self'", "'unsafe-inline'"],
-  'img-src': ["'self'", 'data:', 'https:'],
-  'font-src': ["'self'", 'https:'],
-  'connect-src': ["'self'", 'https://*.supabase.co', 'https://api.stripe.com'],
+  'img-src': ["'self'", "data:", "https:"],
+  'connect-src': ["'self'", "https://*.supabase.co"],
+  'font-src': ["'self'"],
+  'object-src': ["'none'"],
+  'media-src': ["'self'"],
+  'frame-src': ["'none'"]
 };
 
-// Sanitize HTML content to prevent XSS
+// Sanitize HTML content
 export function sanitizeHtml(content: string): string {
   return DOMPurify.sanitize(content, {
-    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li', 'a'],
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a'],
     ALLOWED_ATTR: ['href', 'target'],
+    ALLOW_DATA_ATTR: false
   });
 }
 
-// Sanitize text content (strip all HTML)
-export function sanitizeText(content: string): string {
-  return DOMPurify.sanitize(content, { ALLOWED_TAGS: [] });
-}
-
-// Validate file uploads
-export function validateFile(file: File): { valid: boolean; error?: string } {
-  const maxSize = 10 * 1024 * 1024; // 10MB
-  const allowedTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp',
-    'application/pdf',
-    'text/plain',
+// Input validation utilities
+export function validateInput(input: string, maxLength: number = 1000): boolean {
+  if (typeof input !== 'string') return false;
+  if (input.length > maxLength) return false;
+  
+  // Check for suspicious patterns
+  const suspiciousPatterns = [
+    /<script/i,
+    /javascript:/i,
+    /data:text\/html/i,
+    /vbscript:/i,
+    /on\w+=/i
   ];
+  
+  return !suspiciousPatterns.some(pattern => pattern.test(input));
+}
 
+// Password strength validation
+export function validatePasswordStrength(password: string): {
+  isValid: boolean;
+  errors: string[];
+} {
+  const errors: string[] = [];
+  
+  if (password.length < 8) {
+    errors.push('Password must be at least 8 characters long');
+  }
+  
+  if (!/[a-z]/.test(password)) {
+    errors.push('Password must contain at least one lowercase letter');
+  }
+  
+  if (!/[A-Z]/.test(password)) {
+    errors.push('Password must contain at least one uppercase letter');
+  }
+  
+  if (!/\d/.test(password)) {
+    errors.push('Password must contain at least one number');
+  }
+  
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push('Password must contain at least one special character');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+}
+
+// File validation
+export function validateFile(file: File): { isValid: boolean; error?: string } {
+  const maxSize = 10 * 1024 * 1024; // 10MB
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  
   if (file.size > maxSize) {
-    return { valid: false, error: 'File size exceeds 10MB limit' };
+    return { isValid: false, error: 'File size must be less than 10MB' };
   }
-
+  
   if (!allowedTypes.includes(file.type)) {
-    return { valid: false, error: 'File type not allowed' };
+    return { isValid: false, error: 'Only image files (JPEG, PNG, GIF, WebP) are allowed' };
   }
-
-  return { valid: true };
+  
+  return { isValid: true };
 }
 
-// Rate limiting for client-side operations
-class RateLimiter {
-  private attempts: Map<string, number[]> = new Map();
-  private readonly maxAttempts: number;
-  private readonly windowMs: number;
-
-  constructor(maxAttempts: number = 5, windowMs: number = 15 * 60 * 1000) {
-    this.maxAttempts = maxAttempts;
-    this.windowMs = windowMs;
-  }
-
-  canProceed(key: string): boolean {
-    const now = Date.now();
-    const attempts = this.attempts.get(key) || [];
-    
-    // Remove old attempts
-    const validAttempts = attempts.filter(time => now - time < this.windowMs);
-    
-    if (validAttempts.length >= this.maxAttempts) {
-      return false;
-    }
-
-    validAttempts.push(now);
-    this.attempts.set(key, validAttempts);
-    return true;
-  }
+// Generate secure random tokens
+export function generateSecureToken(length: number = 32): string {
+  const array = new Uint8Array(length);
+  crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-export const authRateLimiter = new RateLimiter(5, 15 * 60 * 1000); // 5 attempts per 15 minutes
-export const apiRateLimiter = new RateLimiter(60, 60 * 1000); // 60 requests per minute
+// Audit logging
+export async function logSecurityEvent(
+  event: string,
+  details: Record<string, any>,
+  userId?: string
+) {
+  try {
+    console.log('Security Event:', {
+      event,
+      details,
+      userId,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href
+    });
+    
+    // In a real application, you would send this to your backend
+    // for proper security monitoring
+  } catch (error) {
+    console.error('Failed to log security event:', error);
+  }
+}
