@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          new_values: Json | null
+          old_values: Json | null
+          record_id: string | null
+          table_name: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string | null
+          table_name?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       business_boosts: {
         Row: {
           amount: number
@@ -1277,6 +1310,10 @@ export type Database = {
       geomfromewkt: {
         Args: { "": string }
         Returns: unknown
+      }
+      get_current_user_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       get_proj4_from_srid: {
         Args: { "": number }
