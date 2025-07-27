@@ -18,6 +18,9 @@ import Marketplace from "./pages/Marketplace";
 import ItemPage from "./pages/ItemPage";
 import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import SellItem from "./pages/SellItem";
+import ShareItem from "./pages/ShareItem";
+import SellerInbox from "./pages/SellerInbox";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Membership from "./pages/Membership";
@@ -62,6 +65,9 @@ const App = () => (
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/marketplace/item/:id" element={<ItemPage />} />
           <Route path="/marketplace/checkout/:id" element={<Checkout />} />
+          <Route path="/marketplace/sell" element={<SellItem />} />
+          <Route path="/marketplace/share/:id" element={<ShareItem />} />
+          <Route path="/marketplace/message/:sellerId" element={<SellerInbox />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />

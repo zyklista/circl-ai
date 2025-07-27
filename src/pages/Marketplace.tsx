@@ -126,7 +126,10 @@ const Marketplace = () => {
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-foreground">Marketplace</h1>
-            <Button className="bg-gradient-to-br from-green-400 to-emerald-500 text-white">
+            <Button 
+              className="bg-gradient-to-br from-green-400 to-emerald-500 text-white"
+              onClick={() => navigate('/marketplace/sell')}
+            >
               Sell Item
             </Button>
           </div>

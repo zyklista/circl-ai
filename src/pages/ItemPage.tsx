@@ -177,10 +177,18 @@ const ItemPage = () => {
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   Buy Now
                 </Button>
-                <Button variant="outline" size="icon">
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={() => navigate(`/marketplace/share/${item.id}`)}
+                >
                   <Share2 className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" size="icon">
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  onClick={() => navigate(`/marketplace/message/${item.seller}`)}
+                >
                   <MessageCircle className="w-4 h-4" />
                 </Button>
               </div>
