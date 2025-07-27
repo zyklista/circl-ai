@@ -214,7 +214,6 @@ const Groups = () => {
               </div>
             </div>
           </div>
-          </div>
 
           {/* Meet and Greet Activity */}
           <Card className="shadow-soft">
