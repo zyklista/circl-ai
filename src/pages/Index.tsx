@@ -3,7 +3,8 @@ import { CreatePost } from "@/components/CreatePost";
 import { PostCard } from "@/components/PostCard";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Calendar, ShoppingCart, Plus } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // Sample post data
@@ -39,6 +40,63 @@ const hotPicks = [
     gradient: "from-orange-500 to-red-500"
   }
 ];
+
+const marketplaceItems = {
+  hotSelling: [
+    {
+      id: 1,
+      title: "Handcrafted Pottery Set",
+      price: "$45",
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=200&h=200&fit=crop",
+      badge: "🔥 Hot"
+    },
+    {
+      id: 2,
+      title: "Innovation Light Bulb",
+      price: "$25",
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=200&h=200&fit=crop",
+      badge: "⭐ Best Seller"
+    }
+  ],
+  discounts: [
+    {
+      id: 3,
+      title: "Garden Light Set",
+      price: "$30",
+      originalPrice: "$50",
+      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=200&h=200&fit=crop",
+      badge: "40% OFF"
+    },
+    {
+      id: 4,
+      title: "Orange Flowers Bundle",
+      price: "$15",
+      originalPrice: "$25",
+      image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=200&h=200&fit=crop",
+      badge: "40% OFF"
+    }
+  ],
+  newItems: [
+    {
+      id: 5,
+      title: "Cozy Pet Blanket",
+      price: "$35",
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=200&h=200&fit=crop",
+      badge: "🆕 New"
+    },
+    {
+      id: 6,
+      title: "Artisan Bowl Set",
+      price: "$60",
+      originalPrice: null,
+      image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=200&h=200&fit=crop",
+      badge: "🆕 New"
+    }
+  ]
+};
 
 const Index = () => {
   const navigate = useNavigate();
@@ -120,6 +178,104 @@ const Index = () => {
               {samplePosts.map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
+            </div>
+          </div>
+
+          {/* Marketplace Section */}
+          <div className="space-y-6">
+            {/* Hot Selling */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-red-500" />
+                <h3 className="text-lg font-bold text-foreground">Hot Selling</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {marketplaceItems.hotSelling.map((item) => (
+                  <Card key={item.id} className="shadow-soft hover:shadow-medium transition-all">
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="w-full h-24 object-cover rounded-t-lg"
+                        />
+                        <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">
+                          {item.badge}
+                        </Badge>
+                      </div>
+                      <div className="p-3">
+                        <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                        <p className="font-bold text-primary">{item.price}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Discounts */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Tag className="w-5 h-5 text-orange-500" />
+                <h3 className="text-lg font-bold text-foreground">Discounts</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {marketplaceItems.discounts.map((item) => (
+                  <Card key={item.id} className="shadow-soft hover:shadow-medium transition-all">
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="w-full h-24 object-cover rounded-t-lg"
+                        />
+                        <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs">
+                          {item.badge}
+                        </Badge>
+                      </div>
+                      <div className="p-3">
+                        <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                        <div className="flex items-center gap-2">
+                          <p className="font-bold text-primary">{item.price}</p>
+                          {item.originalPrice && (
+                            <p className="text-xs text-muted-foreground line-through">{item.originalPrice}</p>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* New Items */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-blue-500" />
+                <h3 className="text-lg font-bold text-foreground">New Items</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {marketplaceItems.newItems.map((item) => (
+                  <Card key={item.id} className="shadow-soft hover:shadow-medium transition-all">
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        <img 
+                          src={item.image} 
+                          alt={item.title}
+                          className="w-full h-24 object-cover rounded-t-lg"
+                        />
+                        <Badge className="absolute top-2 left-2 bg-blue-500 text-white text-xs">
+                          {item.badge}
+                        </Badge>
+                      </div>
+                      <div className="p-3">
+                        <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                        <p className="font-bold text-primary">{item.price}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
 
