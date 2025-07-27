@@ -267,10 +267,10 @@ const Index = () => {
                           {item.badge}
                         </Badge>
                       </div>
-                      <div className="p-3">
-                        <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
-                        <p className="font-bold text-primary">{item.price}</p>
-                      </div>
+                       <div className="p-3">
+                         <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                         <p className="font-bold text-green-600">{item.price}</p>
+                       </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -297,15 +297,15 @@ const Index = () => {
                           {item.badge}
                         </Badge>
                       </div>
-                      <div className="p-3">
-                        <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
-                        <div className="flex items-center gap-2">
-                          <p className="font-bold text-primary">{item.price}</p>
-                          {item.originalPrice && (
-                            <p className="text-xs text-muted-foreground line-through">{item.originalPrice}</p>
-                          )}
-                        </div>
-                      </div>
+                       <div className="p-3">
+                         <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                         <div className="flex items-center gap-2">
+                           <p className="font-bold text-green-600">{item.price}</p>
+                           {item.originalPrice && (
+                             <p className="text-xs text-red-500 line-through">{item.originalPrice}</p>
+                           )}
+                         </div>
+                       </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -332,10 +332,10 @@ const Index = () => {
                           {item.badge}
                         </Badge>
                       </div>
-                      <div className="p-3">
-                        <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
-                        <p className="font-bold text-primary">{item.price}</p>
-                      </div>
+                       <div className="p-3">
+                         <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                         <p className="font-bold text-green-600">{item.price}</p>
+                       </div>
                     </CardContent>
                   </Card>
                 ))}

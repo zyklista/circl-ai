@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, Heart, ShoppingCart, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const hotPicks = [
   {
@@ -52,6 +53,7 @@ const hotPicks = [
 ];
 
 const Marketplace = () => {
+  const navigate = useNavigate();
   return (
     <Layout title="Marketplace">
       <div 
@@ -73,7 +75,11 @@ const Marketplace = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {hotPicks.map((item) => (
-              <Card key={item.id} className="shadow-soft hover:shadow-medium transition-smooth group">
+              <Card 
+                key={item.id} 
+                className="shadow-soft hover:shadow-medium transition-smooth group cursor-pointer"
+                onClick={() => navigate(`/marketplace/item/${item.id}`)}
+              >
                 <CardContent className="p-0">
                   <div className="relative">
                     <img 
@@ -91,6 +97,7 @@ const Marketplace = () => {
                       size="icon" 
                       variant="ghost" 
                       className="absolute top-2 right-2 bg-white/80 hover:bg-white"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <Heart className="w-4 h-4" />
                     </Button>
@@ -114,8 +121,15 @@ const Marketplace = () => {
                     <p className="text-sm text-muted-foreground mb-3">by {item.seller}</p>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-lg font-bold text-primary">{item.price}</span>
-                      <Button size="sm" className="bg-gradient-to-br from-green-400 to-emerald-500 text-white">
+                      <span className="text-lg font-bold text-green-600">{item.price}</span>
+                      <Button 
+                        size="sm" 
+                        className="bg-gradient-to-br from-green-400 to-emerald-500 text-white"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/marketplace/item/${item.id}`);
+                        }}
+                      >
                         <ShoppingCart className="w-4 h-4 mr-1" />
                         Buy
                       </Button>

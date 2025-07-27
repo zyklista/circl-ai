@@ -15,6 +15,7 @@ import JoinEvent from "./pages/JoinEvent";
 import CreateEvent from "./pages/CreateEvent";
 import CancelEvent from "./pages/CancelEvent";
 import Marketplace from "./pages/Marketplace";
+import ItemPage from "./pages/ItemPage";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Membership from "./pages/Membership";
@@ -57,6 +58,7 @@ const App = () => (
           <Route path="/events/:id/join" element={<JoinEvent />} />
           <Route path="/events/:id/cancel" element={<CancelEvent />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/marketplace/item/:id" element={<ItemPage />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/membership" element={<Membership />} />
