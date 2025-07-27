@@ -255,39 +255,39 @@ const GroupPage = () => {
                           Join Group
                         </Button>
                       )}
-                       <DropdownMenu>
+                        <DropdownMenu>
                          <DropdownMenuTrigger asChild>
                            <Button size="icon" variant="outline">
                              <Settings className="w-4 h-4" />
                            </Button>
                          </DropdownMenuTrigger>
                          <DropdownMenuContent align="end" className="w-48">
-                           <DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/edit`)}>
                              <Edit className="w-4 h-4 mr-2" />
                              Edit Group
                            </DropdownMenuItem>
-                           <DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/manage-members`)}>
                              <Users className="w-4 h-4 mr-2" />
                              Manage Members
                            </DropdownMenuItem>
-                           <DropdownMenuItem>
-                             <Flag className="w-4 h-4 mr-2" />
-                             Group Rules
+                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/members`)}>
+                             <Users className="w-4 h-4 mr-2" />
+                             Group Members
                            </DropdownMenuItem>
-                           <DropdownMenuItem>
+                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/share`)}>
                              <Copy className="w-4 h-4 mr-2" />
                              Share Group
                            </DropdownMenuItem>
                            <DropdownMenuSeparator />
-                           <DropdownMenuItem>
-                             <Download className="w-4 h-4 mr-2" />
-                             Export Data
+                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/assign-admin`)}>
+                             <Crown className="w-4 h-4 mr-2" />
+                             Assign an Admin
                            </DropdownMenuItem>
-                           <DropdownMenuItem className="text-red-600">
+                           <DropdownMenuItem className="text-red-600" onClick={() => navigate(`/groups/${id}/leave`)}>
                              <UserMinus className="w-4 h-4 mr-2" />
                              Leave Group
                            </DropdownMenuItem>
-                           <DropdownMenuItem className="text-red-600">
+                           <DropdownMenuItem className="text-red-600" onClick={() => navigate(`/groups/${id}/delete`)}>
                              <Trash2 className="w-4 h-4 mr-2" />
                              Delete Group
                            </DropdownMenuItem>

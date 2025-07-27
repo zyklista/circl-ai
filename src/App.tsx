@@ -15,6 +15,13 @@ import Membership from "./pages/Membership";
 import Transactions from "./pages/Transactions";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import EditGroup from "./pages/EditGroup";
+import ManageMembers from "./pages/ManageMembers";
+import GroupMembers from "./pages/GroupMembers";
+import ShareGroup from "./pages/ShareGroup";
+import AssignAdmin from "./pages/AssignAdmin";
+import LeaveGroup from "./pages/LeaveGroup";
+import DeleteGroup from "./pages/DeleteGroup";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +35,13 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/groups/:id" element={<GroupPage />} />
+          <Route path="/groups/:id/edit" element={<EditGroup />} />
+          <Route path="/groups/:id/manage-members" element={<ManageMembers />} />
+          <Route path="/groups/:id/members" element={<GroupMembers />} />
+          <Route path="/groups/:id/share" element={<ShareGroup />} />
+          <Route path="/groups/:id/assign-admin" element={<AssignAdmin />} />
+          <Route path="/groups/:id/leave" element={<LeaveGroup />} />
+          <Route path="/groups/:id/delete" element={<DeleteGroup />} />
           <Route path="/groups/:groupId/posts/:postId" element={<PostPage />} />
           <Route path="/events" element={<Events />} />
           <Route path="/marketplace" element={<Marketplace />} />
