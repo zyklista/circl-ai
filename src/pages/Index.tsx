@@ -170,50 +170,57 @@ const Index = () => {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-foreground">FEATURED</h2>
             
-            {/* Most Active Group */}
-            <Card className="shadow-lg hover:shadow-xl transition-all">
-              <CardContent className="p-0">
-                <div className={`h-28 bg-gradient-to-br ${featuredGroups.mostActive.gradient} text-white p-4 rounded-t-lg flex flex-col justify-center relative`}>
-                  <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
-                    {featuredGroups.mostActive.badge}
-                  </Badge>
-                  <h3 className="font-bold text-xl">{featuredGroups.mostActive.name}</h3>
-                  <p className="text-sm opacity-90">{featuredGroups.mostActive.description}</p>
-                </div>
-                <div className="p-4 flex justify-between items-center">
-                  <div className="text-sm text-muted-foreground">
-                    {featuredGroups.mostActive.members} members • {featuredGroups.mostActive.activeToday} active today
-                  </div>
-                  <Button size="sm" className="bg-gradient-primary text-white">
-                    Join
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recommended Groups */}
-            <div className="grid grid-cols-1 gap-4">
-              {featuredGroups.recommended.map((group) => (
-                <Card key={group.id} className="shadow-lg hover:shadow-xl transition-all">
-                  <CardContent className="p-0">
-                    <div className={`h-20 bg-gradient-to-br ${group.gradient} text-white p-4 rounded-t-lg flex flex-col justify-center relative`}>
+            {/* Horizontal Sliding Container */}
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-4 pb-2" style={{ width: 'max-content' }}>
+                {/* Most Active Group */}
+                <Card className="w-48 h-48 shadow-lg hover:shadow-xl transition-all flex-shrink-0">
+                  <CardContent className="p-0 h-full">
+                    <div className={`h-32 bg-gradient-to-br ${featuredGroups.mostActive.gradient} text-white p-3 rounded-t-lg relative`}>
                       <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
-                        {group.badge}
+                        🔥
                       </Badge>
-                      <h3 className="font-bold text-lg">{group.name}</h3>
-                      <p className="text-sm opacity-90">{group.description}</p>
-                    </div>
-                    <div className="p-4 flex justify-between items-center">
-                      <div className="text-sm text-muted-foreground">
-                        {group.members} members
+                      <div className="h-full flex flex-col justify-center">
+                        <h3 className="font-bold text-lg">{featuredGroups.mostActive.name}</h3>
+                        <p className="text-xs opacity-90">Most Active Today</p>
                       </div>
-                      <Button size="sm" variant="outline">
+                    </div>
+                    <div className="p-3 h-16 flex flex-col justify-between">
+                      <div className="text-xs text-muted-foreground">
+                        {featuredGroups.mostActive.members} members
+                      </div>
+                      <Button size="sm" className="bg-gradient-primary text-white text-xs h-7">
                         Join
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+
+                {/* Recommended Groups */}
+                {featuredGroups.recommended.map((group) => (
+                  <Card key={group.id} className="w-48 h-48 shadow-lg hover:shadow-xl transition-all flex-shrink-0">
+                    <CardContent className="p-0 h-full">
+                      <div className={`h-32 bg-gradient-to-br ${group.gradient} text-white p-3 rounded-t-lg relative`}>
+                        <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
+                          ⭐
+                        </Badge>
+                        <div className="h-full flex flex-col justify-center">
+                          <h3 className="font-bold text-lg">{group.name}</h3>
+                          <p className="text-xs opacity-90">{group.badge}</p>
+                        </div>
+                      </div>
+                      <div className="p-3 h-16 flex flex-col justify-between">
+                        <div className="text-xs text-muted-foreground">
+                          {group.members} members
+                        </div>
+                        <Button size="sm" variant="outline" className="text-xs h-7">
+                          Join
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
 
