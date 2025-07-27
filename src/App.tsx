@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Groups from "./pages/Groups";
+import GroupPage from "./pages/GroupPage";
 import Events from "./pages/Events";
 import Marketplace from "./pages/Marketplace";
 import Messages from "./pages/Messages";
@@ -25,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/groups" element={<Groups />} />
+          <Route path="/groups/:id" element={<GroupPage />} />
           <Route path="/events" element={<Events />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/messages" element={<Messages />} />

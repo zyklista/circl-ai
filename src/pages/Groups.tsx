@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, MapPin, Eye, Plus, Star, Crown, TrendingUp, Megaphone } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const myGroups = [
   {
@@ -61,6 +62,7 @@ const suggestedGroups = [
 ];
 
 const Groups = () => {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
   
   // Auto-slide effect for suggested groups
@@ -71,6 +73,10 @@ const Groups = () => {
     
     return () => clearInterval(interval);
   }, []);
+
+  const handleViewGroup = (groupId: number) => {
+    navigate(`/groups/${groupId}`);
+  };
 
   return (
     <Layout title="Groups">
@@ -119,7 +125,10 @@ const Groups = () => {
                             <Badge variant="outline" className="border-orange-300 text-orange-600">{group.category}</Badge>
                           </div>
                         </div>
-                        <Button className="bg-gradient-to-br from-orange-400 to-red-500 text-white">
+                        <Button 
+                          className="bg-gradient-to-br from-orange-400 to-red-500 text-white"
+                          onClick={() => handleViewGroup(group.id)}
+                        >
                           <Eye className="w-4 h-4 mr-2" />
                           Manage
                         </Button>
@@ -151,7 +160,12 @@ const Groups = () => {
                         <Badge variant="outline" className="border-orange-300 text-orange-600">{group.category}</Badge>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" className="border-orange-300 text-orange-600 hover:bg-orange-50">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                      onClick={() => handleViewGroup(group.id)}
+                    >
                       <Eye className="w-4 h-4 mr-2" />
                       View
                     </Button>
