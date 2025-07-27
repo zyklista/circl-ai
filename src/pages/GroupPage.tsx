@@ -25,9 +25,16 @@ import {
   UserPlus,
   Bell,
   Camera,
-  Edit
+  Edit,
+  ChevronDown,
+  UserMinus,
+  Flag,
+  Copy,
+  Download,
+  Trash2
 } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 // Sample group data
 const groupData = {
@@ -128,9 +135,14 @@ const GroupPage = () => {
   const [newPost, setNewPost] = useState("");
   const [isMember, setIsMember] = useState(true);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const handleJoinGroup = () => {
     setIsMember(!isMember);
+  };
+
+  const handlePostClick = (postId: number) => {
+    navigate(`/groups/${id}/posts/${postId}`);
   };
 
   return (
@@ -222,9 +234,44 @@ const GroupPage = () => {
                           Join Group
                         </Button>
                       )}
-                      <Button size="icon" variant="outline">
-                        <Settings className="w-4 h-4" />
-                      </Button>
+                       <DropdownMenu>
+                         <DropdownMenuTrigger asChild>
+                           <Button size="icon" variant="outline">
+                             <Settings className="w-4 h-4" />
+                           </Button>
+                         </DropdownMenuTrigger>
+                         <DropdownMenuContent align="end" className="w-48">
+                           <DropdownMenuItem>
+                             <Edit className="w-4 h-4 mr-2" />
+                             Edit Group
+                           </DropdownMenuItem>
+                           <DropdownMenuItem>
+                             <Users className="w-4 h-4 mr-2" />
+                             Manage Members
+                           </DropdownMenuItem>
+                           <DropdownMenuItem>
+                             <Flag className="w-4 h-4 mr-2" />
+                             Group Rules
+                           </DropdownMenuItem>
+                           <DropdownMenuItem>
+                             <Copy className="w-4 h-4 mr-2" />
+                             Share Group
+                           </DropdownMenuItem>
+                           <DropdownMenuSeparator />
+                           <DropdownMenuItem>
+                             <Download className="w-4 h-4 mr-2" />
+                             Export Data
+                           </DropdownMenuItem>
+                           <DropdownMenuItem className="text-red-600">
+                             <UserMinus className="w-4 h-4 mr-2" />
+                             Leave Group
+                           </DropdownMenuItem>
+                           <DropdownMenuItem className="text-red-600">
+                             <Trash2 className="w-4 h-4 mr-2" />
+                             Delete Group
+                           </DropdownMenuItem>
+                         </DropdownMenuContent>
+                       </DropdownMenu>
                     </div>
                   </div>
                 </div>
@@ -286,7 +333,11 @@ const GroupPage = () => {
 
                   {/* Posts Feed */}
                   {posts.map((post) => (
-                    <Card key={post.id} className="shadow-soft">
+                    <Card 
+                      key={post.id} 
+                      className="shadow-soft cursor-pointer hover:shadow-medium transition-all"
+                      onClick={() => handlePostClick(post.id)}
+                    >
                       <CardContent className="p-6">
                         {post.isPinned && (
                           <div className="flex items-center gap-2 mb-4 p-2 bg-orange-50 rounded-lg">
