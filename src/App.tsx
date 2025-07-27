@@ -65,6 +65,7 @@ const App = () => (
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/marketplace/item/:id" element={<ItemPage />} />
           <Route path="/marketplace/checkout/:id" element={<Checkout />} />
+          <Route path="/transactions/:id" element={<Transactions />} />
           <Route path="/marketplace/sell" element={<SellItem />} />
           <Route path="/marketplace/share/:id" element={<ShareItem />} />
           <Route path="/marketplace/message/:sellerId" element={<SellerInbox />} />

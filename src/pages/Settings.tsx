@@ -326,7 +326,7 @@ const Settings = () => {
                           <Button variant="outline" onClick={() => setIsEditing(false)}>
                             Cancel
                           </Button>
-                          <Button onClick={handleSaveProfile} className="bg-gradient-to-br from-orange-400 to-red-500 text-white">
+                          <Button onClick={handleSaveProfile} className="bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-lg">
                             <Save className="w-4 h-4 mr-2" />
                             Save Changes
                           </Button>
