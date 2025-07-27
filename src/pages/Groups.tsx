@@ -59,7 +59,7 @@ const Groups = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-lg font-semibold text-foreground">{group.name}</h3>
-                        <Badge variant={group.status === "Open" ? "default" : "secondary"}>
+                        <Badge className={group.status === "Open" ? "bg-gradient-to-r from-orange-400 to-red-500 text-white" : "bg-gradient-to-r from-orange-300 to-red-400 text-white"}>
                           {group.status}
                         </Badge>
                       </div>
@@ -89,7 +89,7 @@ const Groups = () => {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-lg font-semibold text-foreground">{group.name}</h3>
-                        <Badge variant={group.status === "Open" ? "default" : "secondary"}>
+                        <Badge className={group.status === "Open" ? "bg-gradient-to-r from-orange-400 to-red-500 text-white" : "bg-gradient-to-r from-orange-300 to-red-400 text-white"}>
                           {group.status}
                         </Badge>
                       </div>
@@ -156,7 +156,18 @@ const Groups = () => {
 
           {/* Create Group - Center Button */}
           <div className="flex justify-center py-12">
-            <Card className="shadow-xl border-2 border-dashed border-orange-300 bg-gradient-to-r from-orange-50 to-red-50 max-w-md">
+            {/* Mobile: Simple + Button */}
+            <div className="md:hidden">
+              <Button 
+                size="icon" 
+                className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-xl rounded-full"
+              >
+                <Plus className="w-8 h-8" />
+              </Button>
+            </div>
+
+            {/* Desktop: Full Create Group Card */}
+            <Card className="hidden md:block shadow-xl border-2 border-dashed border-orange-300 bg-gradient-to-r from-orange-50 to-red-50 max-w-md">
               <CardContent className="p-10 text-center">
                 <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
                   <Plus className="w-10 h-10" />
