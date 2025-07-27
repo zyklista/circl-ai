@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { CreatePost } from "@/components/CreatePost";
 import { PostCard } from "@/components/PostCard";
@@ -113,6 +114,19 @@ const marketplaceItems = {
 
 const Index = () => {
   const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // All featured groups combined for sliding
+  const allFeaturedGroups = [featuredGroups.mostActive, ...featuredGroups.recommended];
+  
+  // Auto-slide effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % allFeaturedGroups.length);
+    }, 3000); // Change slide every 3 seconds
+    
+    return () => clearInterval(interval);
+  }, [allFeaturedGroups.length]);
 
   return (
     <Layout title="">
@@ -170,55 +184,51 @@ const Index = () => {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold text-foreground">FEATURED</h2>
             
-            {/* Horizontal Sliding Container */}
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-4 pb-2" style={{ width: 'max-content' }}>
-                {/* Most Active Group */}
-                <Card className="w-48 h-48 shadow-lg hover:shadow-xl transition-all flex-shrink-0">
-                  <CardContent className="p-0 h-full">
-                    <div className={`h-32 bg-gradient-to-br ${featuredGroups.mostActive.gradient} text-white p-3 rounded-t-lg relative`}>
-                      <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
-                        🔥
-                      </Badge>
-                      <div className="h-full flex flex-col justify-center">
-                        <h3 className="font-bold text-lg">{featuredGroups.mostActive.name}</h3>
-                        <p className="text-xs opacity-90">Most Active Today</p>
-                      </div>
-                    </div>
-                    <div className="p-3 h-16 flex flex-col justify-between">
-                      <div className="text-xs text-muted-foreground">
-                        {featuredGroups.mostActive.members} members
-                      </div>
-                      <Button size="sm" className="bg-gradient-primary text-white text-xs h-7">
-                        Join
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Recommended Groups */}
-                {featuredGroups.recommended.map((group) => (
-                  <Card key={group.id} className="w-48 h-48 shadow-lg hover:shadow-xl transition-all flex-shrink-0">
+            {/* Auto-sliding Container */}
+            <div className="relative overflow-hidden">
+              <div 
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ 
+                  transform: `translateX(-${currentSlide * 200}px)`,
+                  width: `${allFeaturedGroups.length * 200}px`
+                }}
+              >
+                {allFeaturedGroups.map((group, index) => (
+                  <Card key={group.id || index} className="w-48 h-48 shadow-lg hover:shadow-xl transition-all flex-shrink-0 mr-4">
                     <CardContent className="p-0 h-full">
                       <div className={`h-32 bg-gradient-to-br ${group.gradient} text-white p-3 rounded-t-lg relative`}>
                         <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
-                          ⭐
+                          {index === 0 ? "🔥" : "⭐"}
                         </Badge>
                         <div className="h-full flex flex-col justify-center">
                           <h3 className="font-bold text-lg">{group.name}</h3>
-                          <p className="text-xs opacity-90">{group.badge}</p>
+                          <p className="text-xs opacity-90">
+                            {index === 0 ? "Most Active Today" : group.badge}
+                          </p>
                         </div>
                       </div>
                       <div className="p-3 h-16 flex flex-col justify-between">
                         <div className="text-xs text-muted-foreground">
                           {group.members} members
                         </div>
-                        <Button size="sm" variant="outline" className="text-xs h-7">
+                        <Button size="sm" className={index === 0 ? "bg-gradient-primary text-white text-xs h-7" : "text-xs h-7"} variant={index === 0 ? "default" : "outline"}>
                           Join
                         </Button>
                       </div>
                     </CardContent>
                   </Card>
+                ))}
+              </div>
+              
+              {/* Slide Indicators */}
+              <div className="flex justify-center mt-4 gap-2">
+                {allFeaturedGroups.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentSlide ? "bg-primary" : "bg-gray-300"
+                    }`}
+                  />
                 ))}
               </div>
             </div>
