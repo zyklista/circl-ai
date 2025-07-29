@@ -31,9 +31,41 @@ const handleFileUpload = async (req: Request) => {
     const user = userData.user;
     if (!user) throw new Error("User not authenticated");
 
-    // For now, return a mock response - in production you'd upload to your storage
-    const mockFileUrl = `https://utfs.io/f/${crypto.randomUUID()}`;
+    // Upload to UploadThing
+    const uploadthingSecret = Deno.env.get("UPLOADTHING_SECRET");
+    const uploadthingAppId = Deno.env.get("UPLOADTHING_APP_ID");
     
+    if (!uploadthingSecret || !uploadthingAppId) {
+      throw new Error("UploadThing credentials not configured");
+    }
+
+    // Convert file to buffer for UploadThing API
+    const buffer = await file.arrayBuffer();
+    const formData = new FormData();
+    formData.append('files', new Blob([buffer], { type: file.type }), file.name);
+
+    // Upload to UploadThing API
+    const uploadResponse = await fetch('https://api.uploadthing.com/api/uploadFiles', {
+      method: 'POST',
+      headers: {
+        'X-Uploadthing-Api-Key': uploadthingSecret,
+        'X-Uploadthing-Version': '6.4.0',
+      },
+      body: formData,
+    });
+
+    if (!uploadResponse.ok) {
+      const errorText = await uploadResponse.text();
+      throw new Error(`UploadThing upload failed: ${errorText}`);
+    }
+
+    const uploadResult = await uploadResponse.json();
+    const uploadedFile = uploadResult.data?.[0];
+    
+    if (!uploadedFile) {
+      throw new Error('No file returned from UploadThing');
+    }
+
     // Store file info in Supabase using service role
     const supabaseService = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -44,18 +76,18 @@ const handleFileUpload = async (req: Request) => {
     const { data, error } = await supabaseService.from("uploaded_files").insert({
       user_id: user.id,
       file_name: file.name,
-      file_url: mockFileUrl,
+      file_url: uploadedFile.url,
       file_size: file.size,
       file_type: file.type,
-      uploadthing_key: crypto.randomUUID(),
+      uploadthing_key: uploadedFile.key,
     }).select().single();
 
     if (error) throw error;
 
     return {
-      url: mockFileUrl,
+      url: uploadedFile.url,
       name: file.name,
-      key: data.uploadthing_key,
+      key: uploadedFile.key,
       size: file.size,
       type: file.type
     };
