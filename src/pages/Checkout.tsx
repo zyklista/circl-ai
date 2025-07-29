@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -76,15 +77,34 @@ const Checkout = () => {
     });
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     toast({
       title: "Processing Payment",
       description: "Redirecting to secure payment..."
     });
-    // Simulate payment processing
-    setTimeout(() => {
-      navigate("/payment-success");
-    }, 2000);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: {
+          amount: total,
+          currency: 'usd',
+          postId: item.id
+        }
+      });
+      
+      if (error) throw error;
+      
+      // Redirect to Stripe Checkout
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      toast({
+        title: "Payment Failed",
+        description: error instanceof Error ? error.message : "Failed to process payment",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
