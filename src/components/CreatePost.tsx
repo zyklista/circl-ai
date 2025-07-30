@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Image, Smile, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from '@/hooks/use-toast';
 import { rateLimiter } from '@/lib/rate-limiter';
@@ -86,22 +86,17 @@ export function CreatePost() {
   };
 
   return (
-    <Card className="bg-community-surface shadow-soft border-0 mb-6">
+    <Card className="bg-white dark:bg-slate-800 shadow-lg border-0 mb-6">
       <CardHeader className="pb-3">
-        <div className="flex items-center space-x-3">
-          <Avatar className="w-10 h-10">
-            <AvatarImage src="/api/placeholder/40/40" />
-            <AvatarFallback className="bg-gradient-primary text-white">
-              U
-            </AvatarFallback>
-          </Avatar>
+        <div className="flex items-start space-x-3">
+          <ProfileAvatar size="md" />
           <div className="flex-1">
             <Textarea
               placeholder="What's happening in your community?"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="border-0 bg-community-bg resize-none text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary"
-              rows={3}
+              className="border-0 bg-muted/50 resize-none text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-primary min-h-[100px]"
+              rows={4}
               maxLength={5000}
             />
           </div>
@@ -111,29 +106,28 @@ export function CreatePost() {
       <CardContent className="pt-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" className="text-primary hover:bg-community-hover">
+            <Button variant="ghost" size="sm" className="text-primary hover:bg-muted/50 h-8">
               <Image className="w-4 h-4 mr-2" />
               Photo
             </Button>
-            <Button variant="ghost" size="sm" className="text-primary hover:bg-community-hover">
+            <Button variant="ghost" size="sm" className="text-primary hover:bg-muted/50 h-8">
               <Smile className="w-4 h-4 mr-2" />
               Emoji
             </Button>
-            <Button variant="ghost" size="sm" className="text-primary hover:bg-community-hover">
+            <Button variant="ghost" size="sm" className="text-primary hover:bg-muted/50 h-8">
               <MapPin className="w-4 h-4 mr-2" />
               Location
             </Button>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <div className="text-xs text-muted-foreground">
               {content.length}/5000
             </div>
             <Button 
               onClick={handleSubmit}
               disabled={!content.trim() || isSubmitting}
-              variant="gradient"
-              className="disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-gradient-to-r from-primary to-accent text-white disabled:opacity-50 disabled:cursor-not-allowed h-8 px-6"
             >
               <Send className="w-4 h-4 mr-2" />
               {isSubmitting ? 'Posting...' : 'Post'}

@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Heart, MessageCircle, Share, MoreHorizontal, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
 
 interface PostCardProps {
   post: {
@@ -25,29 +26,34 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes);
+  const navigate = useNavigate();
 
   const handleLike = () => {
     setIsLiked(!isLiked);
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
   };
 
+  const handleComment = () => {
+    navigate(`/post/${post.id}`);
+  };
+
+  const handleShare = () => {
+    // Implement share functionality
+    console.log('Share post:', post.id);
+  };
+
   return (
-    <Card className="bg-community-surface shadow-soft hover:shadow-medium transition-smooth border-0">
+    <Card className="bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-all border-0">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Avatar className="w-10 h-10">
-              <AvatarImage src={post.author.avatar} />
-              <AvatarFallback className="bg-gradient-primary text-white">
-                {post.author.name.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
+            <ProfileAvatar size="md" />
             <div>
               <p className="font-semibold text-foreground">{post.author.name}</p>
               <p className="text-sm text-muted-foreground">@{post.author.handle} • {post.timestamp}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-community-hover">
+          <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-muted/50 h-8 w-8">
             <MoreHorizontal className="w-4 h-4" />
           </Button>
         </div>
@@ -67,15 +73,15 @@ export function PostCard({ post }: PostCardProps) {
       <Separator className="opacity-50" />
 
       <CardFooter className="pt-4">
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-around w-full">
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={handleLike}
-            className={`flex items-center space-x-2 transition-smooth ${
+            className={`flex items-center space-x-2 transition-all hover:bg-red-50 dark:hover:bg-red-950/20 px-4 py-2 rounded-full ${
               isLiked 
-                ? 'text-primary hover:text-primary' 
-                : 'text-muted-foreground hover:text-primary'
+                ? 'text-red-500 hover:text-red-600' 
+                : 'text-muted-foreground hover:text-red-500'
             }`}
           >
             <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
@@ -85,7 +91,8 @@ export function PostCard({ post }: PostCardProps) {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-smooth"
+            onClick={handleComment}
+            className="flex items-center space-x-2 text-muted-foreground hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20 px-4 py-2 rounded-full transition-all"
           >
             <MessageCircle className="w-4 h-4" />
             <span className="font-medium">{post.comments}</span>
@@ -94,7 +101,8 @@ export function PostCard({ post }: PostCardProps) {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition-smooth"
+            onClick={handleShare}
+            className="flex items-center space-x-2 text-muted-foreground hover:text-green-500 hover:bg-green-50 dark:hover:bg-green-950/20 px-4 py-2 rounded-full transition-all"
           >
             <Share className="w-4 h-4" />
             <span className="font-medium">{post.shares}</span>

@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { CreatePost } from "@/components/CreatePost";
 import { PostCard } from "@/components/PostCard";
+import { ProfileAvatar } from "@/components/ProfileAvatar";
+import { JoinedGroups } from "@/components/JoinedGroups";
+import { FloatingActions } from "@/components/FloatingActions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles } from "lucide-react";
+import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Sample post data
 const samplePosts = [
@@ -114,6 +118,7 @@ const marketplaceItems = {
 
 const Index = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   
   // All featured groups combined for sliding
@@ -130,238 +135,239 @@ const Index = () => {
 
   return (
     <Layout title="">
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
-        <div className="max-w-lg mx-auto space-y-8">
-          {/* NAS-Style Welcome Header */}
-          <div className="text-center space-y-6">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-accent rounded-3xl flex items-center justify-center shadow-2xl">
-              <div className="w-18 h-18 bg-white rounded-2xl flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="w-3 h-3 bg-primary rounded-full"></div>
-                  <div className="w-3 h-3 bg-accent rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-              <p className="text-muted-foreground">Your personal network hub</p>
-            </div>
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* NAS.io Style Header with Profile */}
+        <div className="text-center space-y-6">
+          <ProfileAvatar size="xl" showVerified editable className="mx-auto" />
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-foreground">
+              Welcome back, {user?.user_metadata?.display_name || "User"}!
+            </h1>
+            <p className="text-muted-foreground">Your personal network dashboard</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Left Sidebar - Joined Groups */}
+          <div className="lg:col-span-1">
+            <JoinedGroups />
           </div>
 
-          {/* NAS-Style Main Modules */}
-          <div className="grid grid-cols-3 gap-4">
-            <Card 
-              onClick={() => navigate('/groups')}
-              className="h-28 bg-gradient-to-br from-orange-400/10 to-red-500/10 border-orange-200 hover:shadow-xl transition-all cursor-pointer group"
-            >
-              <CardContent className="h-full flex flex-col items-center justify-center p-4 space-y-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Users className="w-6 h-6 text-white" />
-                </div>
-                <span className="font-semibold text-sm text-foreground">Groups</span>
-              </CardContent>
-            </Card>
-            
-            <Card 
-              onClick={() => navigate('/events')}
-              className="h-28 bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-blue-200 hover:shadow-xl transition-all cursor-pointer group"
-            >
-              <CardContent className="h-full flex flex-col items-center justify-center p-4 space-y-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Calendar className="w-6 h-6 text-white" />
-                </div>
-                <span className="font-semibold text-sm text-foreground">Events</span>
-              </CardContent>
-            </Card>
-            
-            <Card 
-              onClick={() => navigate('/marketplace')}
-              className="h-28 bg-gradient-to-br from-green-400/10 to-emerald-500/10 border-green-200 hover:shadow-xl transition-all cursor-pointer group"
-            >
-              <CardContent className="h-full flex flex-col items-center justify-center p-4 space-y-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <ShoppingCart className="w-6 h-6 text-white" />
-                </div>
-                <span className="font-semibold text-sm text-foreground">Marketplace</span>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Featured Groups Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">FEATURED</h2>
-            
-            {/* Auto-sliding Container */}
-            <div className="relative overflow-hidden">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ 
-                  transform: `translateX(-${currentSlide * 200}px)`,
-                  width: `${allFeaturedGroups.length * 200}px`
-                }}
+          {/* Main Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Quick Actions */}
+            <div className="grid grid-cols-3 gap-4">
+              <Card 
+                onClick={() => navigate('/groups')}
+                className="p-4 hover:shadow-lg transition-all cursor-pointer border-orange-200 bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20"
               >
+                <div className="text-center space-y-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mx-auto">
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="font-semibold text-sm text-foreground">Groups</span>
+                </div>
+              </Card>
+              
+              <Card 
+                onClick={() => navigate('/events')}
+                className="p-4 hover:shadow-lg transition-all cursor-pointer border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20"
+              >
+                <div className="text-center space-y-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto">
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="font-semibold text-sm text-foreground">Events</span>
+                </div>
+              </Card>
+              
+              <Card 
+                onClick={() => navigate('/marketplace')}
+                className="p-4 hover:shadow-lg transition-all cursor-pointer border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20"
+              >
+                <div className="text-center space-y-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto">
+                    <ShoppingCart className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="font-semibold text-sm text-foreground">Marketplace</span>
+                </div>
+              </Card>
+            </div>
+
+            {/* Featured Groups Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-foreground">Recommended Groups</h2>
+                <Button variant="outline" onClick={() => navigate('/groups')}>
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                  View All
+                </Button>
+              </div>
+              
+              {/* Groups Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {allFeaturedGroups.map((group, index) => (
-                  <Card key={group.id || index} className="w-48 h-48 shadow-lg hover:shadow-xl transition-all flex-shrink-0 mr-4">
-                    <CardContent className="p-0 h-full">
-                      <div className={`h-32 bg-gradient-to-br ${group.gradient} text-white p-3 rounded-t-lg relative`}>
+                  <Card key={group.id || index} className="hover:shadow-lg transition-all cursor-pointer">
+                    <CardContent className="p-0">
+                      <div className={`h-32 bg-gradient-to-br ${group.gradient} text-white p-4 rounded-t-lg relative`}>
                         <Badge className="absolute top-2 right-2 bg-white/20 text-white text-xs">
-                          {index === 0 ? "🔥" : "⭐"}
+                          {index === 0 ? "🔥 Most Active" : "⭐ Recommended"}
                         </Badge>
                         <div className="h-full flex flex-col justify-center">
                           <h3 className="font-bold text-lg">{group.name}</h3>
-                          <p className="text-xs opacity-90">
-                            {index === 0 ? "Most Active Today" : group.badge}
-                          </p>
+                          <p className="text-xs opacity-90">{group.description}</p>
                         </div>
                       </div>
-                      <div className="p-3 h-16 flex flex-col justify-between">
-                        <div className="text-xs text-muted-foreground">
-                          {group.members} members
+                      <div className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="text-sm text-muted-foreground">
+                            {group.members} members
+                          </div>
+                          <Button 
+                            size="sm" 
+                            className="bg-gradient-to-r from-primary to-accent text-white"
+                            onClick={() => navigate('/groups')}
+                          >
+                            Join
+                          </Button>
                         </div>
-                        <Button size="sm" className={index === 0 ? "bg-gradient-primary text-white text-xs h-7" : "text-xs h-7"} variant={index === 0 ? "default" : "outline"}>
-                          Join
-                        </Button>
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-              
-              {/* Slide Indicators */}
-              <div className="flex justify-center mt-4 gap-2">
-                {allFeaturedGroups.map((_, index) => (
-                  <div
-                    key={index}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === currentSlide ? "bg-primary" : "bg-gray-300"
-                    }`}
-                  />
+            </div>
+
+            {/* Activity Feed */}
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-foreground">Recent Activity</h2>
+              <CreatePost />
+              <div className="space-y-4">
+                {samplePosts.map((post) => (
+                  <PostCard key={post.id} post={post} />
                 ))}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Activity Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">Activity</h2>
-            <CreatePost />
-            <div className="space-y-4">
-              {samplePosts.map((post) => (
-                <PostCard key={post.id} post={post} />
-              ))}
-            </div>
-          </div>
-
-          {/* Marketplace Section */}
-          <div className="space-y-6">
-            {/* Hot Selling */}
-            <div className="space-y-3">
+        {/* Marketplace Section */}
+        <div className="space-y-6">
+          {/* Hot Selling */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-red-500" />
                 <h3 className="text-lg font-bold text-foreground">Hot Selling</h3>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                {marketplaceItems.hotSelling.map((item) => (
-                  <Card key={item.id} className="shadow-soft hover:shadow-medium transition-all">
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        <img 
-                          src={item.image} 
-                          alt={item.title}
-                          className="w-full h-24 object-cover rounded-t-lg"
-                        />
-                        <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">
-                          {item.badge}
-                        </Badge>
-                      </div>
-                       <div className="p-3">
-                         <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
-                         <p className="font-bold text-green-600">{item.price}</p>
-                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <Button variant="outline" onClick={() => navigate('/marketplace')}>
+                View All
+              </Button>
             </div>
-
-            {/* Discounts */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Tag className="w-5 h-5 text-orange-500" />
-                <h3 className="text-lg font-bold text-foreground">Discounts</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {marketplaceItems.discounts.map((item) => (
-                  <Card key={item.id} className="shadow-soft hover:shadow-medium transition-all">
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        <img 
-                          src={item.image} 
-                          alt={item.title}
-                          className="w-full h-24 object-cover rounded-t-lg"
-                        />
-                        <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs">
-                          {item.badge}
-                        </Badge>
-                      </div>
-                       <div className="p-3">
-                         <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
-                         <div className="flex items-center gap-2">
-                           <p className="font-bold text-green-600">{item.price}</p>
-                           {item.originalPrice && (
-                             <p className="text-xs text-red-500 line-through">{item.originalPrice}</p>
-                           )}
-                         </div>
-                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* New Items */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-blue-500" />
-                <h3 className="text-lg font-bold text-foreground">New Items</h3>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {marketplaceItems.newItems.map((item) => (
-                  <Card key={item.id} className="shadow-soft hover:shadow-medium transition-all">
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        <img 
-                          src={item.image} 
-                          alt={item.title}
-                          className="w-full h-24 object-cover rounded-t-lg"
-                        />
-                        <Badge className="absolute top-2 left-2 bg-blue-500 text-white text-xs">
-                          {item.badge}
-                        </Badge>
-                      </div>
-                       <div className="p-3">
-                         <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
-                         <p className="font-bold text-green-600">{item.price}</p>
-                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {marketplaceItems.hotSelling.map((item) => (
+                <Card 
+                  key={item.id} 
+                  className="shadow-soft hover:shadow-medium transition-all cursor-pointer"
+                  onClick={() => navigate(`/marketplace/item/${item.id}`)}
+                >
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-32 object-cover rounded-t-lg"
+                      />
+                      <Badge className="absolute top-2 left-2 bg-red-500 text-white text-xs">
+                        {item.badge}
+                      </Badge>
+                    </div>
+                     <div className="p-3">
+                       <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                       <p className="font-bold text-green-600">{item.price}</p>
+                     </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
 
-          {/* Floating Action Button */}
-          <Button 
-            size="icon"
-            className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-red-400 to-orange-500 text-white shadow-lg hover:shadow-xl transition-all"
-          >
-            <Plus className="w-6 h-6" />
-          </Button>
+          {/* Discounts */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Tag className="w-5 h-5 text-orange-500" />
+              <h3 className="text-lg font-bold text-foreground">Special Offers</h3>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {marketplaceItems.discounts.map((item) => (
+                <Card 
+                  key={item.id} 
+                  className="shadow-soft hover:shadow-medium transition-all cursor-pointer"
+                  onClick={() => navigate(`/marketplace/item/${item.id}`)}
+                >
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-32 object-cover rounded-t-lg"
+                      />
+                      <Badge className="absolute top-2 left-2 bg-orange-500 text-white text-xs">
+                        {item.badge}
+                      </Badge>
+                    </div>
+                     <div className="p-3">
+                       <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                       <div className="flex items-center gap-2">
+                         <p className="font-bold text-green-600">{item.price}</p>
+                         {item.originalPrice && (
+                           <p className="text-xs text-red-500 line-through">{item.originalPrice}</p>
+                         )}
+                       </div>
+                     </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* New Items */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-blue-500" />
+              <h3 className="text-lg font-bold text-foreground">Latest Arrivals</h3>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {marketplaceItems.newItems.map((item) => (
+                <Card 
+                  key={item.id} 
+                  className="shadow-soft hover:shadow-medium transition-all cursor-pointer"
+                  onClick={() => navigate(`/marketplace/item/${item.id}`)}
+                >
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-full h-32 object-cover rounded-t-lg"
+                      />
+                      <Badge className="absolute top-2 left-2 bg-blue-500 text-white text-xs">
+                        {item.badge}
+                      </Badge>
+                    </div>
+                     <div className="p-3">
+                       <h4 className="font-medium text-sm text-foreground truncate">{item.title}</h4>
+                       <p className="font-bold text-green-600">{item.price}</p>
+                     </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
+
+        {/* Floating AI Support */}
+        <FloatingActions />
       </div>
     </Layout>
   );
