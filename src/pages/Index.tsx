@@ -130,54 +130,65 @@ const Index = () => {
 
   return (
     <Layout title="">
-      <div 
-        className="min-h-screen p-6"
-        style={{ background: 'var(--home-bg)' }}
-      >
-        <div className="max-w-lg mx-auto space-y-6">
-          {/* Welcome Header */}
-          <div className="text-center space-y-4">
-            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-red-400 via-yellow-400 to-blue-500 rounded-full flex items-center justify-center">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-1">
-                  <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
-                  <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
+        <div className="max-w-lg mx-auto space-y-8">
+          {/* NAS-Style Welcome Header */}
+          <div className="text-center space-y-6">
+            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-primary to-accent rounded-3xl flex items-center justify-center shadow-2xl">
+              <div className="w-18 h-18 bg-white rounded-2xl flex items-center justify-center">
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="w-3 h-3 bg-primary rounded-full"></div>
+                  <div className="w-3 h-3 bg-accent rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
                 </div>
               </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">Hey Juma!</h1>
-              <p className="text-foreground/80">Connect & explore your circles</p>
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
+              <p className="text-muted-foreground">Your personal network hub</p>
             </div>
           </div>
 
-          {/* Main Action Buttons */}
+          {/* NAS-Style Main Modules */}
           <div className="grid grid-cols-3 gap-4">
-            <Button 
+            <Card 
               onClick={() => navigate('/groups')}
-              className="h-24 bg-gradient-to-br from-orange-400 to-red-500 text-white shadow-lg hover:shadow-xl transition-all flex flex-col items-center justify-center gap-2"
+              className="h-28 bg-gradient-to-br from-orange-400/10 to-red-500/10 border-orange-200 hover:shadow-xl transition-all cursor-pointer group"
             >
-              <Users className="w-6 h-6" />
-              <span className="font-semibold">Groups</span>
-            </Button>
-            <Button 
+              <CardContent className="h-full flex flex-col items-center justify-center p-4 space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <span className="font-semibold text-sm text-foreground">Groups</span>
+              </CardContent>
+            </Card>
+            
+            <Card 
               onClick={() => navigate('/events')}
-              className="h-24 bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg hover:shadow-xl transition-all flex flex-col items-center justify-center gap-2"
+              className="h-28 bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-blue-200 hover:shadow-xl transition-all cursor-pointer group"
             >
-              <Calendar className="w-6 h-6" />
-              <span className="font-semibold">Events</span>
-            </Button>
-            <Button 
+              <CardContent className="h-full flex flex-col items-center justify-center p-4 space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Calendar className="w-6 h-6 text-white" />
+                </div>
+                <span className="font-semibold text-sm text-foreground">Events</span>
+              </CardContent>
+            </Card>
+            
+            <Card 
               onClick={() => navigate('/marketplace')}
-              className="h-24 bg-gradient-to-br from-green-400 to-emerald-500 text-white shadow-lg hover:shadow-xl transition-all flex flex-col items-center justify-center gap-2"
+              className="h-28 bg-gradient-to-br from-green-400/10 to-emerald-500/10 border-green-200 hover:shadow-xl transition-all cursor-pointer group"
             >
-              <ShoppingCart className="w-6 h-6" />
-              <span className="font-semibold">Marketplace</span>
-            </Button>
+              <CardContent className="h-full flex flex-col items-center justify-center p-4 space-y-2">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <ShoppingCart className="w-6 h-6 text-white" />
+                </div>
+                <span className="font-semibold text-sm text-foreground">Marketplace</span>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Featured Groups Section */}

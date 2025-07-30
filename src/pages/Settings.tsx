@@ -45,7 +45,8 @@ import {
   Receipt,
   History,
   Banknote,
-  Wallet
+  Wallet,
+  KeyRound
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -394,6 +395,37 @@ const Settings = () => {
             {/* Settings & Privacy - Combined */}
             <TabsContent value="settings">
               <div className="space-y-6">
+                {/* Password Reset */}
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <KeyRound className="w-5 h-5" />
+                      Password & Security
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-4">
+                      <div>
+                        <h4 className="font-medium mb-2">Change Password</h4>
+                        <p className="text-sm text-muted-foreground mb-4">Update your password to keep your account secure</p>
+                        <Button variant="outline" className="w-full sm:w-auto">
+                          <KeyRound className="w-4 h-4 mr-2" />
+                          Send Password Reset Email
+                        </Button>
+                      </div>
+                      <Separator />
+                      <div>
+                        <h4 className="font-medium mb-2">Two-Factor Authentication</h4>
+                        <p className="text-sm text-muted-foreground mb-4">Add an extra layer of security to your account</p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Enable 2FA</span>
+                          <Switch />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* Notifications */}
                 <Card className="shadow-soft">
                   <CardHeader>
