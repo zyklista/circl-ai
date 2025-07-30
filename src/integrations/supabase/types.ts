@@ -14,6 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
+      ad_payments: {
+        Row: {
+          ad_id: string
+          amount: number
+          created_at: string
+          discount_percent: number | null
+          id: string
+          status: string
+          stripe_payment_intent_id: string | null
+          user_id: string
+        }
+        Insert: {
+          ad_id: string
+          amount: number
+          created_at?: string
+          discount_percent?: number | null
+          id?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          user_id: string
+        }
+        Update: {
+          ad_id?: string
+          amount?: number
+          created_at?: string
+          discount_percent?: number | null
+          id?: string
+          status?: string
+          stripe_payment_intent_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ad_payments_ad_id_fkey"
+            columns: ["ad_id"]
+            isOneToOne: false
+            referencedRelation: "ads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ads: {
+        Row: {
+          bid_amount: number
+          created_at: string
+          description: string
+          ends_at: string
+          id: string
+          image_url: string | null
+          starts_at: string
+          status: string
+          target_url: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          weekly_budget: number
+        }
+        Insert: {
+          bid_amount?: number
+          created_at?: string
+          description: string
+          ends_at: string
+          id?: string
+          image_url?: string | null
+          starts_at: string
+          status?: string
+          target_url?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          weekly_budget?: number
+        }
+        Update: {
+          bid_amount?: number
+          created_at?: string
+          description?: string
+          ends_at?: string
+          id?: string
+          image_url?: string | null
+          starts_at?: string
+          status?: string
+          target_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          weekly_budget?: number
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -246,6 +335,92 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      events: {
+        Row: {
+          created_at: string
+          creator_id: string
+          description: string | null
+          end_time: string | null
+          group_id: string | null
+          id: string
+          is_paid: boolean | null
+          location: string | null
+          max_participants: number | null
+          price: number | null
+          start_time: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          end_time?: string | null
+          group_id?: string | null
+          id?: string
+          is_paid?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          price?: number | null
+          start_time: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          end_time?: string | null
+          group_id?: string | null
+          id?: string
+          is_paid?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          price?: number | null
+          start_time?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          created_at: string
+          creator_id: string
+          description: string | null
+          id: string
+          is_private: boolean | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          description?: string | null
+          id?: string
+          is_private?: boolean | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          description?: string | null
+          id?: string
+          is_private?: boolean | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       help_posts: {
         Row: {
@@ -668,6 +843,75 @@ export type Database = {
           proj4text?: string | null
           srid?: number
           srtext?: string | null
+        }
+        Relationships: []
+      }
+      subscription_plans: {
+        Row: {
+          created_at: string
+          features: Json
+          id: string
+          name: string
+          price_monthly: number
+          stripe_price_id: string | null
+          tier: Database["public"]["Enums"]["membership_tier"]
+        }
+        Insert: {
+          created_at?: string
+          features: Json
+          id?: string
+          name: string
+          price_monthly: number
+          stripe_price_id?: string | null
+          tier: Database["public"]["Enums"]["membership_tier"]
+        }
+        Update: {
+          created_at?: string
+          features?: Json
+          id?: string
+          name?: string
+          price_monthly?: number
+          stripe_price_id?: string | null
+          tier?: Database["public"]["Enums"]["membership_tier"]
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          status: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          tier: Database["public"]["Enums"]["membership_tier"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: Database["public"]["Enums"]["membership_tier"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          status?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          tier?: Database["public"]["Enums"]["membership_tier"]
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -2626,7 +2870,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      membership_tier: "free" | "elite" | "premium"
     }
     CompositeTypes: {
       geometry_dump: {
@@ -2761,6 +3005,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      membership_tier: ["free", "elite", "premium"],
+    },
   },
 } as const
