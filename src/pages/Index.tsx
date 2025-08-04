@@ -148,9 +148,43 @@ const Index = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Sidebar - Joined Groups */}
+          {/* Left Sidebar - Hot Selling Items */}
           <div className="lg:col-span-1">
-            <JoinedGroups />
+            <Card className="sticky top-4">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <TrendingUp className="w-5 h-5 text-red-500" />
+                  <h3 className="font-bold text-foreground">Hot Selling</h3>
+                </div>
+                <div className="space-y-3">
+                  {marketplaceItems.hotSelling.map((item) => (
+                    <div 
+                      key={item.id}
+                      onClick={() => navigate(`/marketplace/item/${item.id}`)}
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted cursor-pointer transition-colors"
+                    >
+                      <img 
+                        src={item.image} 
+                        alt={item.title}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm truncate">{item.title}</p>
+                        <p className="text-green-600 font-bold text-sm">{item.price}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full mt-3"
+                    onClick={() => navigate('/marketplace')}
+                  >
+                    View All Items
+                  </Button>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* Main Content */}
@@ -238,14 +272,65 @@ const Index = () => {
               </div>
             </div>
 
-            {/* Activity Feed */}
-            <div className="space-y-4">
+            {/* Expanded Activity Feed */}
+            <div className="space-y-6">
               <h2 className="text-2xl font-bold text-foreground">Recent Activity</h2>
               <CreatePost />
+              
+              {/* Activity Stats */}
+              <div className="grid grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">12</div>
+                  <div className="text-sm text-muted-foreground">Posts Today</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">48</div>
+                  <div className="text-sm text-muted-foreground">Total Likes</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">16</div>
+                  <div className="text-sm text-muted-foreground">Comments</div>
+                </div>
+              </div>
+
+              {/* Recent Posts */}
               <div className="space-y-4">
                 {samplePosts.map((post) => (
                   <PostCard key={post.id} post={post} />
                 ))}
+                
+                {/* Show more sample activity */}
+                <div className="space-y-4">
+                  <Card className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold">M</span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="font-semibold">Maria Rodriguez</span>
+                          <span className="text-sm text-muted-foreground">joined Creative Minds group</span>
+                          <span className="text-sm text-muted-foreground">4 hours ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center">
+                        <span className="text-white font-bold">J</span>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="font-semibold">John Smith</span>
+                          <span className="text-sm text-muted-foreground">purchased Handcrafted Pottery Set</span>
+                          <span className="text-sm text-muted-foreground">6 hours ago</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
               </div>
             </div>
           </div>
