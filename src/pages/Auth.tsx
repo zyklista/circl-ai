@@ -54,7 +54,21 @@ export default function Auth() {
 
   const handleSubmit = async (e: React.FormEvent, type: 'signin' | 'signup') => {
     e.preventDefault();
-    if (!validateForm()) return;
+    console.log('Form submitted:', { type, formData });
+    
+    // For sign-in, only validate email and password
+    if (type === 'signin') {
+      if (!formData.email || !formData.password) {
+        setErrors({
+          email: !formData.email ? 'Email is required' : undefined,
+          password: !formData.password ? 'Password is required' : undefined,
+        });
+        return;
+      }
+      setErrors({});
+    } else if (!validateForm()) {
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -64,6 +78,8 @@ export default function Auth() {
       } else {
         result = await signIn(formData.email, formData.password);
       }
+
+      console.log('Auth result:', result);
 
       if (result.error) {
         toast({
@@ -76,8 +92,15 @@ export default function Auth() {
           title: 'Success',
           description: 'Account created successfully! Please check your email to verify your account.',
         });
+      } else {
+        // Sign-in successful
+        toast({
+          title: 'Success',
+          description: 'Signed in successfully!',
+        });
       }
     } catch (error: any) {
+      console.error('Auth error:', error);
       toast({
         title: 'Error',
         description: 'An unexpected error occurred',
