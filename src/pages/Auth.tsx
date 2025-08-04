@@ -40,11 +40,13 @@ export default function Auth() {
       return true;
     } catch (error: any) {
       const fieldErrors: Partial<AuthInput> = {};
-      error.errors.forEach((err: any) => {
-        if (err.path[0]) {
-          fieldErrors[err.path[0] as keyof AuthInput] = err.message;
-        }
-      });
+      if (error.errors && Array.isArray(error.errors)) {
+        error.errors.forEach((err: any) => {
+          if (err.path && err.path[0]) {
+            fieldErrors[err.path[0] as keyof AuthInput] = err.message;
+          }
+        });
+      }
       setErrors(fieldErrors);
       return false;
     }
