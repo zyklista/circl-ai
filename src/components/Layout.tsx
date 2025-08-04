@@ -31,7 +31,7 @@ export function Layout({ children, title }: LayoutProps) {
   };
   
   return (
-    <SidebarProvider defaultOpen={!isMobile}>
+    <SidebarProvider defaultOpen={false}>
       <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
         <AppSidebar />
         
@@ -75,7 +75,7 @@ export function Layout({ children, title }: LayoutProps) {
             </Button>
           </div>
 
-          {/* Top Left Dynamic Trigger */}
+          {/* Top Left Hamburger Menu (3 lines) */}
           <div className="fixed top-4 left-4 z-50">
             <SidebarTrigger className="bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white/90 h-10 w-10 rounded-lg" />
           </div>

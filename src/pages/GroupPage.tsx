@@ -175,127 +175,137 @@ const GroupPage = () => {
         className="min-h-screen"
         style={{ background: 'var(--groups-bg)' }}
       >
-        {/* Cover Photo and Header */}
+        {/* Group Cover */}
         <div className="relative">
           <div 
-            className="h-64 bg-cover bg-center relative"
+            className="h-80 bg-cover bg-center relative"
             style={{ backgroundImage: `url(${groupData.coverImage})` }}
           >
-            <div className="absolute inset-0 bg-black/30" />
-            <Button 
-              size="icon" 
-              variant="secondary" 
-              className="absolute bottom-4 right-4 bg-white/90 hover:bg-white"
-            >
-              <Camera className="w-4 h-4" />
-            </Button>
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute bottom-6 left-6 right-6 text-white">
+              <div className="flex items-center gap-2 mb-3">
+                <Badge className="bg-groups-primary text-white">
+                  {groupData.privacy === "Public" ? "🌍 Public Group" : "🔒 Private Group"}
+                </Badge>
+                <div className="flex items-center gap-1">
+                  <Users className="w-4 h-4" />
+                  <span className="text-sm">{groupData.members.toLocaleString()} members</span>
+                </div>
+              </div>
+              <h1 className="text-4xl font-bold mb-2">{groupData.name}</h1>
+              <div className="flex items-center gap-6 text-white/90">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5" />
+                  <span>{groupData.location}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  <span>Created {groupData.createdDate}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          
-          {/* Group Info */}
-          <div className="bg-community-surface border-b border-border">
-            <div className="max-w-6xl mx-auto p-6">
-              <div className="flex flex-col md:flex-row gap-6">
-                <div className="relative -mt-16">
-                  <Avatar className="w-32 h-32 border-4 border-white shadow-lg">
+        </div>
+
+        {/* Group Info */}
+        <div className="bg-community-surface border-b border-border">
+          <div className="max-w-6xl mx-auto p-6">
+            <div className="flex flex-col lg:flex-row gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-4 mb-4">
+                  <Avatar className="w-16 h-16">
                     <AvatarImage src={groupData.avatar} />
                     <AvatarFallback>CM</AvatarFallback>
                   </Avatar>
-                  <Button 
-                    size="icon" 
-                    variant="secondary" 
-                    className="absolute bottom-2 right-2 w-8 h-8 bg-white hover:bg-gray-50"
-                  >
-                    <Edit className="w-3 h-3" />
-                  </Button>
-                </div>
-                
-                <div className="flex-1">
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                    <div>
-                      <h1 className="text-3xl font-bold text-foreground mb-2">{groupData.name}</h1>
-                      <div className="flex items-center gap-4 text-muted-foreground mb-3">
-                        <div className="flex items-center gap-1">
-                          {groupData.privacy === "Public" ? (
-                            <Globe className="w-4 h-4" />
-                          ) : (
-                            <Lock className="w-4 h-4" />
-                          )}
-                          <span className="text-sm">{groupData.privacy} group</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          <span className="text-sm">{groupData.members.toLocaleString()} members</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          <span className="text-sm">{groupData.location}</span>
-                        </div>
-                      </div>
-                      <p className="text-muted-foreground max-w-2xl">{groupData.description}</p>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold text-lg">{groupData.name}</h3>
+                      <Crown className="w-5 h-5 text-groups-primary" />
                     </div>
-                    
-                    <div className="flex gap-2">
-                      {isMember ? (
-                        <>
-                          <Button 
-                            onClick={handleJoinGroup}
-                            variant="outline" 
-                            className="border-orange-300 text-orange-600 hover:bg-orange-50"
-                          >
-                            <Bell className="w-4 h-4 mr-2" />
-                            Joined
-                          </Button>
-                        </>
-                      ) : (
+                    <p className="text-muted-foreground">Community Group</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 mb-4">
+                  <Users className="w-5 h-5 text-groups-primary" />
+                  <span className="font-semibold">{groupData.members.toLocaleString()} members</span>
+                  <span className="text-muted-foreground">• {groupData.adminCount} admins</span>
+                </div>
+
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  {groupData.description}
+                </p>
+              </div>
+
+              <div className="lg:w-80">
+                <Card className="shadow-soft">
+                  <CardContent className="p-6">
+                    <div className="text-center mb-6">
+                      <div className="text-3xl font-bold text-groups-primary mb-2">Free</div>
+                      <p className="text-muted-foreground">to join</p>
+                    </div>
+
+                    <div className="space-y-4 mb-6">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Members:</span>
+                        <span className="font-medium">{groupData.members.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Privacy:</span>
+                        <span className="font-medium">{groupData.privacy}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Location:</span>
+                        <span className="font-medium">{groupData.location}</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {!isMember ? (
                         <Button 
                           onClick={handleJoinGroup}
-                          className="bg-gradient-to-br from-orange-400 to-red-500 text-white"
+                          className="w-full bg-groups-primary hover:bg-groups-primary/90 text-white"
                         >
                           <UserPlus className="w-4 h-4 mr-2" />
                           Join Group
                         </Button>
+                      ) : (
+                        <Button 
+                          onClick={handleJoinGroup}
+                          className="w-full bg-green-600 hover:bg-green-700 text-white"
+                        >
+                          <Bell className="w-4 h-4 mr-2" />
+                          Joined
+                        </Button>
                       )}
-                        <DropdownMenu>
-                         <DropdownMenuTrigger asChild>
-                           <Button size="icon" variant="outline">
-                             <Settings className="w-4 h-4" />
-                           </Button>
-                         </DropdownMenuTrigger>
-                         <DropdownMenuContent align="end" className="w-48">
-                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/edit`)}>
-                             <Edit className="w-4 h-4 mr-2" />
-                             Edit Group
-                           </DropdownMenuItem>
-                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/manage-members`)}>
-                             <Users className="w-4 h-4 mr-2" />
-                             Manage Members
-                           </DropdownMenuItem>
-                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/members`)}>
-                             <Users className="w-4 h-4 mr-2" />
-                             Group Members
-                           </DropdownMenuItem>
-                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/share`)}>
-                             <Copy className="w-4 h-4 mr-2" />
-                             Share Group
-                           </DropdownMenuItem>
-                           <DropdownMenuSeparator />
-                           <DropdownMenuItem onClick={() => navigate(`/groups/${id}/assign-admin`)}>
-                             <Crown className="w-4 h-4 mr-2" />
-                             Assign an Admin
-                           </DropdownMenuItem>
-                           <DropdownMenuItem className="text-red-600" onClick={() => navigate(`/groups/${id}/leave`)}>
-                             <UserMinus className="w-4 h-4 mr-2" />
-                             Leave Group
-                           </DropdownMenuItem>
-                           <DropdownMenuItem className="text-red-600" onClick={() => navigate(`/groups/${id}/delete`)}>
-                             <Trash2 className="w-4 h-4 mr-2" />
-                             Delete Group
-                           </DropdownMenuItem>
-                         </DropdownMenuContent>
-                       </DropdownMenu>
+
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="icon" className="flex-1">
+                          <Heart className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="flex-1"
+                          onClick={() => navigate(`/groups/${id}/share`)}
+                        >
+                          <Share className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="icon" className="flex-1">
+                          <Bell className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="flex-1"
+                          onClick={() => navigate(`/groups/${id}/edit`)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
