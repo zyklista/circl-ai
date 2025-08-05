@@ -147,48 +147,7 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Left Sidebar - Hot Selling Items */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-4">
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <TrendingUp className="w-5 h-5 text-red-500" />
-                  <h3 className="font-bold text-foreground">Hot Selling</h3>
-                </div>
-                <div className="space-y-3">
-                  {marketplaceItems.hotSelling.map((item) => (
-                    <div 
-                      key={item.id}
-                      onClick={() => navigate(`/marketplace/item/${item.id}`)}
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted cursor-pointer transition-colors"
-                    >
-                      <img 
-                        src={item.image} 
-                        alt={item.title}
-                        className="w-12 h-12 object-cover rounded"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{item.title}</p>
-                        <p className="text-green-600 font-bold text-sm">{item.price}</p>
-                      </div>
-                    </div>
-                  ))}
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full mt-3"
-                    onClick={() => navigate('/marketplace')}
-                  >
-                    View All Items
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-6">
+        <div className="space-y-6">
             {/* Quick Actions */}
             <div className="grid grid-cols-3 gap-4">
               <Card 
@@ -333,7 +292,6 @@ const Index = () => {
                 </div>
               </div>
             </div>
-          </div>
         </div>
 
         {/* Marketplace Section */}
