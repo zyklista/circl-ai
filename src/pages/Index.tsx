@@ -307,8 +307,8 @@ const Index = () => {
                 View All
               </Button>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {marketplaceItems.hotSelling.map((item) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {marketplaceItems.hotSelling.slice(0, 4).map((item) => (
                 <Card 
                   key={item.id} 
                   className="shadow-soft hover:shadow-medium transition-all cursor-pointer"
@@ -341,8 +341,8 @@ const Index = () => {
               <Tag className="w-5 h-5 text-orange-500" />
               <h3 className="text-lg font-bold text-foreground">Special Offers</h3>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {marketplaceItems.discounts.map((item) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {marketplaceItems.discounts.slice(0, 4).map((item) => (
                 <Card 
                   key={item.id} 
                   className="shadow-soft hover:shadow-medium transition-all cursor-pointer"
@@ -380,8 +380,8 @@ const Index = () => {
               <Sparkles className="w-5 h-5 text-blue-500" />
               <h3 className="text-lg font-bold text-foreground">Latest Arrivals</h3>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {marketplaceItems.newItems.map((item) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {marketplaceItems.newItems.slice(0, 4).map((item) => (
                 <Card 
                   key={item.id} 
                   className="shadow-soft hover:shadow-medium transition-all cursor-pointer"
