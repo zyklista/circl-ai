@@ -206,7 +206,7 @@ const Groups = () => {
                 Filter
               </Button>
               <Button 
-                className="bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-lg"
+                className="bg-groups-button hover:bg-groups-button-hover text-white hover:shadow-lg transition-all"
                 onClick={() => navigate("/groups/create")}
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -260,7 +260,7 @@ const Groups = () => {
                               className="w-full h-40 object-cover"
                             />
                             <Badge 
-                              className="absolute top-2 right-2 bg-gradient-to-r from-orange-400 to-red-500 text-white"
+                              className="absolute top-2 right-2 bg-groups-button text-white"
                             >
                               Creator
                             </Badge>
@@ -440,7 +440,7 @@ const Groups = () => {
                           
                           <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                             <Button 
-                              className="flex-1 bg-gradient-to-br from-orange-400 to-red-500 text-white"
+                              className="flex-1 bg-groups-button hover:bg-groups-button-hover text-white transition-all"
                               onClick={() => handleJoinGroup(group.id)}
                             >
                               <Plus className="w-4 h-4 mr-2" />
@@ -472,7 +472,7 @@ const Groups = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center p-8">
-                  <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                  <div className="w-20 h-20 bg-groups-button rounded-full flex items-center justify-center text-white mx-auto mb-6">
                     <UserPlus className="w-10 h-10" />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">Grow Our Community Together</h3>
@@ -481,7 +481,7 @@ const Groups = () => {
                   </p>
                   <Button 
                     size="lg" 
-                    className="bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-lg px-8"
+                    className="bg-groups-button hover:bg-groups-button-hover text-white hover:shadow-lg px-8 transition-all"
                     onClick={handleInviteFriends}
                   >
                     <UserPlus className="w-5 h-5 mr-2" />
@@ -496,16 +496,16 @@ const Groups = () => {
           <div className="flex justify-center py-12">
             <Card className="shadow-xl border-2 border-dashed border-orange-300 bg-gradient-to-r from-orange-50 to-red-50 max-w-md">
               <CardContent className="p-10 text-center">
-                <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white mx-auto mb-6">
+                <div className="w-20 h-20 bg-groups-button rounded-full flex items-center justify-center text-white mx-auto mb-6">
                   <Megaphone className="w-10 h-10" />
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-3">Enlarge My Community</h3>
                 <p className="text-muted-foreground mb-6 leading-relaxed">Promote your group to reach more members. Advertise your community and grow your audience with targeted campaigns.</p>
                 <div className="flex items-center justify-center gap-2 mb-6">
                   <Star className="w-4 h-4 text-orange-600" />
-                  <span className="text-sm bg-orange-100 text-orange-800 px-4 py-2 rounded-full font-medium">Group Promotion</span>
+                  <span className="text-sm bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-medium">Group Promotion</span>
                 </div>
-                <Button size="lg" className="bg-gradient-to-br from-orange-400 to-red-500 text-white hover:shadow-xl px-8 py-3 text-lg">
+                <Button size="lg" className="bg-groups-button hover:bg-groups-button-hover text-white hover:shadow-xl px-8 py-3 text-lg transition-all">
                   <Megaphone className="w-5 h-5 mr-2" />
                   Advertise My Group
                 </Button>

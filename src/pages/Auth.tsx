@@ -154,16 +154,9 @@ export default function Auth() {
         {/* Left Panel - NAS Style */}
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary/10 to-accent/10 items-center justify-center p-12">
           <div className="max-w-md text-center space-y-8">
-            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary to-accent rounded-3xl flex items-center justify-center shadow-2xl">
-              <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center">
-                <div className="grid grid-cols-3 gap-2">
-                  <div className="w-3 h-3 bg-primary rounded-full"></div>
-                  <div className="w-3 h-3 bg-accent rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                </div>
+            <div className="w-32 h-32 mx-auto bg-gradient-rainbow rounded-full flex items-center justify-center shadow-2xl animate-pulse">
+              <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 bg-gradient-rainbow rounded-full opacity-60"></div>
               </div>
             </div>
             <div className="space-y-4">
@@ -190,16 +183,9 @@ export default function Auth() {
           <div className="w-full max-w-md space-y-8">
             {/* Mobile Logo */}
             <div className="lg:hidden text-center space-y-4">
-              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center">
-                <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center">
-                  <div className="grid grid-cols-3 gap-1">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <div className="w-2 h-2 bg-accent rounded-full"></div>
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  </div>
+              <div className="w-20 h-20 mx-auto bg-gradient-rainbow rounded-full flex items-center justify-center animate-pulse">
+                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gradient-rainbow rounded-full opacity-60"></div>
                 </div>
               </div>
               <h1 className="text-2xl font-bold text-foreground">Welcome to Circl</h1>
