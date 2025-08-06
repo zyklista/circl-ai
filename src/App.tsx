@@ -35,7 +35,6 @@ import Notifications from "./pages/Notifications";
 import Security from "./pages/Security";
 import PaymentMethods from "./pages/PaymentMethods";
 import ActivityLog from "./pages/ActivityLog";
-import AccountAccess from "./pages/AccountAccess";
 import HelpSupport from "./pages/HelpSupport";
 import NotFound from "./pages/NotFound";
 import EditGroup from "./pages/EditGroup";
@@ -93,7 +92,7 @@ const App = () => (
             <Route path="/settings/security" element={<ProtectedRoute><Security /></ProtectedRoute>} />
             <Route path="/settings/payment-methods" element={<ProtectedRoute><PaymentMethods /></ProtectedRoute>} />
             <Route path="/settings/activity-log" element={<ProtectedRoute><ActivityLog /></ProtectedRoute>} />
-            <Route path="/settings/account-access" element={<ProtectedRoute><AccountAccess /></ProtectedRoute>} />
+            <Route path="/settings/membership" element={<ProtectedRoute><Membership /></ProtectedRoute>} />
             <Route path="/settings/help-support" element={<ProtectedRoute><HelpSupport /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>

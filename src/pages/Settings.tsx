@@ -52,10 +52,10 @@ const Settings = () => {
       path: "/settings/activity-log"
     },
     {
-      icon: KeyRound,
-      title: "Account Access",
-      description: "Manage connected apps and API access",
-      path: "/settings/account-access"
+      icon: CreditCard,
+      title: "Membership",
+      description: "Manage your subscription plan and benefits",
+      path: "/settings/membership"
     },
     {
       icon: HelpCircle,
