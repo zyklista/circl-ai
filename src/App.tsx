@@ -28,7 +28,15 @@ import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Membership from "./pages/Membership";
 import Transactions from "./pages/Transactions";
+import TransactionsList from "./pages/TransactionsList";
 import Settings from "./pages/Settings";
+import SettingsPrivacy from "./pages/SettingsPrivacy";
+import Notifications from "./pages/Notifications";
+import Security from "./pages/Security";
+import PaymentMethods from "./pages/PaymentMethods";
+import ActivityLog from "./pages/ActivityLog";
+import AccountAccess from "./pages/AccountAccess";
+import HelpSupport from "./pages/HelpSupport";
 import NotFound from "./pages/NotFound";
 import EditGroup from "./pages/EditGroup";
 import ManageMembers from "./pages/ManageMembers";
@@ -71,6 +79,7 @@ const App = () => (
             <Route path="/marketplace/item/:id" element={<ProtectedRoute><ItemPage /></ProtectedRoute>} />
             <Route path="/marketplace/checkout/:id" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
             <Route path="/transactions/:id" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+            <Route path="/transactions/list" element={<ProtectedRoute><TransactionsList /></ProtectedRoute>} />
             <Route path="/marketplace/sell" element={<ProtectedRoute><SellItem /></ProtectedRoute>} />
             <Route path="/marketplace/share/:id" element={<ProtectedRoute><ShareItem /></ProtectedRoute>} />
             <Route path="/marketplace/message/:sellerId" element={<ProtectedRoute><SellerInbox /></ProtectedRoute>} />
@@ -78,8 +87,14 @@ const App = () => (
             <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/membership" element={<ProtectedRoute><Membership /></ProtectedRoute>} />
-            <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/settings/privacy" element={<ProtectedRoute><SettingsPrivacy /></ProtectedRoute>} />
+            <Route path="/settings/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+            <Route path="/settings/security" element={<ProtectedRoute><Security /></ProtectedRoute>} />
+            <Route path="/settings/payment-methods" element={<ProtectedRoute><PaymentMethods /></ProtectedRoute>} />
+            <Route path="/settings/activity-log" element={<ProtectedRoute><ActivityLog /></ProtectedRoute>} />
+            <Route path="/settings/account-access" element={<ProtectedRoute><AccountAccess /></ProtectedRoute>} />
+            <Route path="/settings/help-support" element={<ProtectedRoute><HelpSupport /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
