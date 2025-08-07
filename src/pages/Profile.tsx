@@ -5,78 +5,27 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckCircle, Edit, MapPin, Link as LinkIcon, Calendar, Users, Camera, X } from "lucide-react";
-import { useState } from "react";
+import { CheckCircle, Edit, MapPin, Link as LinkIcon, Calendar, Users } from "lucide-react";
 
 const Profile = () => {
-  const [coverPhoto, setCoverPhoto] = useState("/api/placeholder/800/300");
-  const [profilePhoto, setProfilePhoto] = useState("/api/placeholder/128/128");
-
-  const handleCoverPhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setCoverPhoto(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleProfilePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfilePhoto(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <Layout title="Profile">
       <div className="min-h-screen p-6 bg-gradient-to-br from-primary/10 to-accent/10">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Profile Header */}
-          <Card className="shadow-soft overflow-hidden">
-            {/* Cover Photo Section */}
-            <div className="relative h-48 bg-gradient-to-r from-blue-400 to-purple-500">
-              <img 
-                src={coverPhoto} 
-                alt="Cover" 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/20"></div>
-              <label className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full cursor-pointer transition-colors">
-                <Camera className="w-4 h-4 text-gray-700" />
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  onChange={handleCoverPhotoChange}
-                  className="hidden" 
-                />
-              </label>
-            </div>
-            
-            <CardContent className="p-6 relative">
+          <Card className="shadow-soft">
+            <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex flex-col items-center md:items-start -mt-16 md:-mt-20">
-                  <div className="relative">
-                    <Avatar className="w-32 h-32 mb-4 border-4 border-white shadow-lg">
-                      <AvatarImage src={profilePhoto} />
-                      <AvatarFallback>JS</AvatarFallback>
-                    </Avatar>
-                    <label className="absolute bottom-4 right-2 bg-white hover:bg-gray-50 p-2 rounded-full cursor-pointer shadow-md transition-colors">
-                      <Camera className="w-4 h-4 text-gray-700" />
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleProfilePhotoChange}
-                        className="hidden" 
-                      />
-                    </label>
-                  </div>
+                <div className="flex flex-col items-center md:items-start">
+                  <Avatar className="w-32 h-32 mb-4">
+                    <AvatarImage src="/api/placeholder/128/128" />
+                    <AvatarFallback>JS</AvatarFallback>
+                  </Avatar>
+                  <Button variant="outline" size="sm">
+                    <Edit className="w-4 h-4 mr-2" />
+                    Change Photo
+                  </Button>
                 </div>
                 
                 <div className="flex-1">

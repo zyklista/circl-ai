@@ -8,7 +8,8 @@ import { FloatingActions } from "@/components/FloatingActions";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles, ArrowRight } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles, ArrowRight, Camera } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -120,10 +121,22 @@ const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [coverPhoto, setCoverPhoto] = useState("/api/placeholder/800/300");
   
   // All featured groups combined for sliding
   const allFeaturedGroups = [featuredGroups.mostActive, ...featuredGroups.recommended];
   
+  const handleCoverPhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setCoverPhoto(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   // Auto-slide effect
   useEffect(() => {
     const interval = setInterval(() => {
@@ -136,16 +149,44 @@ const Index = () => {
   return (
     <Layout title="">
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* NAS.io Style Header with Profile */}
-        <div className="text-center space-y-6">
-          <ProfileAvatar size="xl" showVerified editable className="mx-auto" />
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">
-              Welcome back, {user?.user_metadata?.display_name || "User"}!
-            </h1>
-            <p className="text-muted-foreground">Your personal network dashboard</p>
+        {/* Cover Photo Section - Facebook Style */}
+        <Card className="shadow-soft overflow-hidden">
+          <div className="relative h-48 md:h-64 bg-gradient-to-r from-blue-400 to-purple-500">
+            <img 
+              src={coverPhoto} 
+              alt="Cover" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/20"></div>
+            <label className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full cursor-pointer transition-colors">
+              <Camera className="w-4 h-4 text-gray-700" />
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleCoverPhotoChange}
+                className="hidden" 
+              />
+            </label>
           </div>
-        </div>
+          
+          <CardContent className="p-6 relative">
+            <div className="flex flex-col md:flex-row gap-6">
+              <div className="flex flex-col items-center md:items-start -mt-16 md:-mt-20">
+                <Avatar className="w-32 h-32 mb-4 border-4 border-white shadow-lg">
+                  <AvatarImage src="/api/placeholder/128/128" />
+                  <AvatarFallback>JS</AvatarFallback>
+                </Avatar>
+              </div>
+              
+              <div className="flex-1 text-center md:text-left md:mt-16">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
+                  Welcome back, {user?.user_metadata?.display_name || "User"}!
+                </h1>
+                <p className="text-muted-foreground">Your personal network dashboard</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="space-y-6">
             {/* Quick Actions */}
