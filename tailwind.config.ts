@@ -17,7 +17,10 @@ export default {
 				'2xl': '1400px'
 			}
 		},
-		extend: {
+    extend: {
+      fontFamily: {
+        'inter': ['Inter', 'sans-serif'],
+      },
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
 			},
