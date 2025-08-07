@@ -154,9 +154,15 @@ export default function Auth() {
         {/* Left Panel - NAS Style */}
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary/10 to-accent/10 items-center justify-center p-12">
           <div className="max-w-md text-center space-y-8">
-            <div className="w-32 h-32 mx-auto bg-gradient-rainbow rounded-full flex items-center justify-center shadow-2xl animate-pulse">
-              <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center">
-                <div className="w-16 h-16 bg-gradient-rainbow rounded-full opacity-60"></div>
+            {/* 6 Colored Dots Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="w-6 h-6 rounded-full bg-red-500"></div>
+                <div className="w-6 h-6 rounded-full bg-blue-500"></div>
+                <div className="w-6 h-6 rounded-full bg-green-500"></div>
+                <div className="w-6 h-6 rounded-full bg-yellow-500"></div>
+                <div className="w-6 h-6 rounded-full bg-purple-500"></div>
+                <div className="w-6 h-6 rounded-full bg-pink-500"></div>
               </div>
             </div>
             <div className="space-y-4">
@@ -183,9 +189,15 @@ export default function Auth() {
           <div className="w-full max-w-md space-y-8">
             {/* Mobile Logo */}
             <div className="lg:hidden text-center space-y-4">
-              <div className="w-20 h-20 mx-auto bg-gradient-rainbow rounded-full flex items-center justify-center animate-pulse">
-                <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-10 h-10 bg-gradient-rainbow rounded-full opacity-60"></div>
+              {/* 6 Colored Dots Icon */}
+              <div className="flex justify-center mb-4">
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="w-4 h-4 rounded-full bg-red-500"></div>
+                  <div className="w-4 h-4 rounded-full bg-blue-500"></div>
+                  <div className="w-4 h-4 rounded-full bg-green-500"></div>
+                  <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
+                  <div className="w-4 h-4 rounded-full bg-purple-500"></div>
+                  <div className="w-4 h-4 rounded-full bg-pink-500"></div>
                 </div>
               </div>
               <h1 className="text-2xl font-bold text-foreground">Welcome to Circl</h1>
@@ -243,16 +255,10 @@ export default function Auth() {
                     
                     <TabsContent value="signin" className="space-y-2">
                       <CardTitle className="text-2xl">Welcome back</CardTitle>
-                      <CardDescription>
-                        Sign in to access your personal network
-                      </CardDescription>
                     </TabsContent>
                     
                     <TabsContent value="signup" className="space-y-2">
                       <CardTitle className="text-2xl">Create account</CardTitle>
-                      <CardDescription>
-                        Join our secure community platform
-                      </CardDescription>
                     </TabsContent>
                   </Tabs>
                 </CardHeader>

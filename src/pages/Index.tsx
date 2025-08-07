@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Camera, Check } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { CreatePost } from "@/components/CreatePost";
 import { PostCard } from "@/components/PostCard";
@@ -9,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles, ArrowRight, Camera } from "lucide-react";
+import { Users, Calendar, ShoppingCart, Plus, TrendingUp, Tag, Sparkles, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -172,10 +173,19 @@ const Index = () => {
           <CardContent className="p-6 relative">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="flex flex-col items-center md:items-start -mt-16 md:-mt-20">
-                <Avatar className="w-32 h-32 mb-4 border-4 border-white shadow-lg">
-                  <AvatarImage src="/api/placeholder/128/128" />
-                  <AvatarFallback>JS</AvatarFallback>
-                </Avatar>
+                {/* Profile Photo */}
+                <div className="relative">
+                  <Avatar className="w-32 h-32 mb-4 border-4 border-white shadow-lg">
+                    <AvatarImage src="/api/placeholder/128/128" />
+                    <AvatarFallback>{user?.email?.charAt(0).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  {/* Verified Badge */}
+                  <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-blue-500 rounded-full p-1.5 shadow-lg">
+                      <Check className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
+                </div>
               </div>
               
               <div className="flex-1 text-center md:text-left md:mt-16">
